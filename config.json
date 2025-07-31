@@ -1,0 +1,20 @@
+{
+  "TEST-2024-DEMO-1234": {
+    "kunde": "Test Mandant GmbH",
+    "logo":"logos/Test.png",
+    "user": "test",
+    "pass": "test123"
+  },
+  "DHL-2024-PROD-5678": {
+    "kunde": "DHL Express Germany GmbH",
+    "logo": "logos/dhl_logo.png",
+    "user": "dhl_admin",
+    "pass": "dhl2024!"
+  },
+  "UPS-2024-PROD-9012": {
+    "kunde": "UPS Deutschland",
+    "logo": "logos/ups_logo.png",
+    "user": "ups_user",
+    "pass": "ups_secure_123"
+  }
+}
