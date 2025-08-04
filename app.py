@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""VerwahrBASE v1.0 - Die Referenz für automatische Bürgschaftsberechnung"""
+"""buergcontrolBASE v1.0 - Die Referenz - für automatisiertes Bürgschaftscontolling"""
 
 import streamlit as st
 import pandas as pd
@@ -17,17 +17,16 @@ from collections import defaultdict
 
 # Konfiguration
 st.set_page_config(
-    page_title="VerwahrBASE - Bürgschaftsberechnung",
+    page_title="buergcontrolBASE - Bürgschaftsberechnung",
     page_icon="🏛️",
     layout="wide"
 )
 
-# VerwahrBASE Branding CSS - Komprimiert
-st.markdown("""<style>[data-testid="stTooltipIcon"],[data-testid="tooltipHoverTarget"],div[role="tooltip"]{position:relative!important;z-index:99999!important}:root{--vb-primary:#14532d;--vb-dark:#052e16;--vb-light:#f0fdf4;--vb-gray:#f9fafb}.stApp button:not([title*="help"]):not([role="tab"]):not(:disabled){background-color:var(--vb-primary)!important;color:white!important;border:none!important;border-radius:6px!important;font-weight:600!important}.stApp button:not([title*="help"]):not([role="tab"]):hover:not(:disabled){background-color:var(--vb-dark)!important}button[title="Show help"],button[kind="help"]{background-color:transparent!important}.stApp{background-color:#fafafa}section[data-testid="stSidebar"]{background-color:var(--vb-gray);border-right:3px solid var(--vb-primary)!important}.stSuccess{background-color:var(--vb-light)!important;color:var(--vb-primary)!important;border-left:4px solid var(--vb-primary)!important}.stInfo{background-color:var(--vb-gray)!important;border-left:4px solid var(--vb-primary)!important}[data-testid="metric-container"]{background-color:white;border:2px solid var(--vb-primary);border-radius:8px;padding:1rem}.stTabs [data-baseweb="tab-list"] button[aria-selected="true"]{border-bottom-color:var(--vb-primary)!important}a{color:var(--vb-primary)}input[type="checkbox"]:checked,input[type="radio"]:checked{accent-color:var(--vb-primary)}</style>""", unsafe_allow_html=True)
-
+# buergcontolBASE Branding CSS - Komprimiert
+st.markdown("""<style>[data-testid="stTooltipIcon"],[data-testid="tooltipHoverTarget"],div[role="tooltip"]{position:relative!important;z-index:99999!important}:root{--vb-primary:#8B1C1C;--vb-dark:#5C1111;--vb-light:#fee2e2;--vb-gray:#f9fafb}.stApp button:not([title*="help"]):not([role="tab"]):not(:disabled){background-color:var(--vb-primary)!important;color:white!important;border:none!important;border-radius:6px!important;font-weight:600!important}.stApp button:not([title*="help"]):not([role="tab"]):hover:not(:disabled){background-color:var(--vb-dark)!important}button[title="Show help"],button[kind="help"]{background-color:transparent!important}.stApp{background-color:#fafafa}section[data-testid="stSidebar"]{background-color:var(--vb-gray);border-right:3px solid var(--vb-primary)!important}.stSuccess{background-color:var(--vb-light)!important;color:var(--vb-primary)!important;border-left:4px solid var(--vb-primary)!important}.stInfo{background-color:var(--vb-gray)!important;border-left:4px solid var(--vb-primary)!important}[data-testid="metric-container"]{background-color:white;border:2px solid var(--vb-primary);border-radius:8px;padding:1rem}.stTabs [data-baseweb="tab-list"] button[aria-selected="true"]{border-bottom-color:var(--vb-primary)!important}a{color:var(--vb-primary)}input[type="checkbox"]:checked,input[type="radio"]:checked{accent-color:var(--vb-primary)}section[data-testid="stSidebar"] hr{border:none!important;border-top:2px solid var(--vb-primary)!important;margin:1rem 0!important}</style>""", unsafe_allow_html=True)
 # Logo als HTML-Komponente
 def render_logo(size="normal", with_tagline=True):
-    """Rendert das VerwahrBASE Logo mit optionalem Tagline"""
+    """Rendert das buergcontolBASE Logo mit optionalem Tagline"""
     if size == "small":
         font_size = "1rem"
         padding = "6px 10px"
@@ -40,17 +39,17 @@ def render_logo(size="normal", with_tagline=True):
     logo_html = f"""
     <div style="text-align: center; margin: 20px 0;">
         <div style="display: flex; align-items: center; gap: 0; justify-content: center;">
-            <div style="background: #14532d; padding: {padding}; border-radius: 8px; display: flex; align-items: baseline;">
+            <div style="background: #8B1C1C; padding: {padding}; border-radius: 8px; display: flex; align-items: baseline;">
                 <span style="color: white; font-weight: 900; font-size: {font_size};">V</span>
                 <span style="color: white; font-weight: 500; font-size: {font_size};">erwahr</span>
             </div>
-            <span style="color: #14532d; font-weight: 700; font-size: {font_size}; margin-left: 4px;">BASE</span>
+            <span style="color: #8B1C1C; font-weight: 700; font-size: {font_size}; margin-left: 4px;">BASE</span>
         </div>"""
     
     if with_tagline:
         logo_html += f"""
         <div style="margin-top: 10px; text-align: center;">
-            <div style="color: #14532d; font-size: {tagline_size}; line-height: 1.4;">
+            <div style="color: #8B1C1C; font-size: {tagline_size}; line-height: 1.4;">
                 <div>Die Referenz - für automatisiertes</div>
                 <div>Bürgschaftscontrolling</div>
             </div>
@@ -113,7 +112,7 @@ def show_login():
             background: white;
             padding: 2rem;
             border-radius: 12px;
-            border: 3px solid var(--verwahrbase-primary);
+            border: 3px solid var(--vb-primary);
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         </style>
@@ -122,7 +121,7 @@ def show_login():
         col1, col2, col3 = st.columns([1,2,1])
         with col2:
             st.markdown("""
-            <div style="background: white; padding: 2rem; border-radius: 12px; border: 3px solid #14532d; margin-bottom: 1.5rem; transform: scale(1.3);">
+            <div style="background: white; padding: 2rem; border-radius: 12px; border: 3px solid #8B1C1C;">
             """ + render_logo() + """
             </div>
             """, unsafe_allow_html=True)
@@ -2550,13 +2549,14 @@ def setup_sidebar():
     
     with st.sidebar:
         st.markdown("""
-        <div style="background: white; padding: 1rem; border-radius: 8px; border: 2px solid #14532d; margin-bottom: 1rem;">
+        <div style="background: white; padding: 1rem 2rem; border-radius: 12px; border: 3px solid #8B1C1C;">
         """ + render_logo(size="small", with_tagline=True) + """
         </div>
         """, unsafe_allow_html=True)
         
         if st.session_state.get('mandant_logo') and os.path.exists(st.session_state.get('mandant_logo', '')):
             try:
+                st.markdown("<br>", unsafe_allow_html=True)  # <-- Abstand hinzufügen
                 col1, col2, col3 = st.columns([1, 2, 1])
                 with col2:
                     st.image(st.session_state['mandant_logo'], width=150)
@@ -3447,15 +3447,15 @@ def main():
             orientation="horizontal",
             styles={
                 "container": {"padding": "0!important", "background-color": "#fafafa"},
-                "icon": {"color": "#14532d", "font-size": "18px"},
+                "icon": {"color": "#8B1C1C", "font-size": "18px"},
                 "nav-link": {
                     "font-size": "16px", 
                     "text-align": "center", 
                     "margin": "0px",
-                    "--hover-color": "#f0fdf4"
+                    "--hover-color": "#fee2e2"
                 },
                 "nav-link-selected": {
-                    "background-color": "#14532d",
+                    "background-color": "#8B1C1C",
                     "color": "white"
                 },
             }
