@@ -26,32 +26,29 @@ st.set_page_config(
 st.markdown("""<style>[data-testid="stTooltipIcon"],[data-testid="tooltipHoverTarget"],div[role="tooltip"]{position:relative!important;z-index:99999!important}:root{--vb-primary:#8B1C1C;--vb-dark:#5C1111;--vb-light:#fee2e2;--vb-gray:#f9fafb}.stApp button:not([title*="help"]):not([role="tab"]):not(:disabled){background-color:var(--vb-primary)!important;color:white!important;border:none!important;border-radius:6px!important;font-weight:600!important}.stApp button:not([title*="help"]):not([role="tab"]):hover:not(:disabled){background-color:var(--vb-dark)!important}button[title="Show help"],button[kind="help"]{background-color:transparent!important}.stApp{background-color:#fafafa}section[data-testid="stSidebar"]{background-color:var(--vb-gray);border-right:3px solid var(--vb-primary)!important}.stSuccess{background-color:var(--vb-light)!important;color:var(--vb-primary)!important;border-left:4px solid var(--vb-primary)!important}.stInfo{background-color:var(--vb-gray)!important;border-left:4px solid var(--vb-primary)!important}[data-testid="metric-container"]{background-color:white;border:2px solid var(--vb-primary);border-radius:8px;padding:1rem}.stTabs [data-baseweb="tab-list"] button[aria-selected="true"]{border-bottom-color:var(--vb-primary)!important}a{color:var(--vb-primary)}input[type="checkbox"]:checked,input[type="radio"]:checked{accent-color:var(--vb-primary)}section[data-testid="stSidebar"] hr{border:none!important;border-top:2px solid var(--vb-primary)!important;margin:1rem 0!important}</style>""", unsafe_allow_html=True)
 # Logo als HTML-Komponente
 def render_logo(size="normal", with_tagline=True):
-    """Rendert das buergcontolBASE Logo mit optionalem Tagline"""
+    """Rendert das buergcontrolBASE Logo mit optionalem Tagline"""
     if size == "small":
-        font_size = "1rem"
+        font_size = "1.5rem"  # Erhöht von 1rem
         padding = "6px 10px"
-        tagline_size = "0.8rem"
+        tagline_size = "0.9rem"  # Erhöht von 0.8rem
     else:
-        font_size = "1.5rem"
+        font_size = "2.5rem"  # Erhöht von 1.5rem
         padding = "10px 16px"
-        tagline_size = "1rem"
+        tagline_size = "1.1rem"  # Erhöht von 1rem
     
     logo_html = f"""
     <div style="text-align: center; margin: 20px 0;">
         <div style="display: flex; align-items: center; gap: 0; justify-content: center;">
-            <div style="background: #8B1C1C; padding: {padding}; border-radius: 8px; display: flex; align-items: baseline;">
-                <span style="color: white; font-weight: 900; font-size: {font_size};">V</span>
-                <span style="color: white; font-weight: 500; font-size: {font_size};">erwahr</span>
-            </div>
-            <span style="color: #8B1C1C; font-weight: 700; font-size: {font_size}; margin-left: 4px;">BASE</span>
+            <span style="color: #8B1C1C; font-weight: 700; font-size: {font_size};">buergcontrol</span>
+            <span style="color: #4a4a4a; font-weight: 700; font-size: {font_size};">BASE</span>
         </div>"""
     
     if with_tagline:
         logo_html += f"""
         <div style="margin-top: 10px; text-align: center;">
             <div style="color: #8B1C1C; font-size: {tagline_size}; line-height: 1.4;">
-                <div>Die Referenz - für automatisiertes</div>
-                <div>Bürgschaftscontrolling</div>
+                <div>Ihre Bürgschaftssicherheit.</div>
+                <div>Der Schutzschirm für Ihre Verwahrlager-Bewilligung.</div>
             </div>
         </div>"""
     
@@ -95,7 +92,7 @@ def check_credentials(username, password, mandant_data):
             password == mandant_data.get('pass'))
 
 def show_login():
-    """Zeigt Login-Screen mit Aktivierungscode und Credentials"""
+    """Zeigt Login-Screen mit Bild, weißem Kasten nur für Logo/Titel"""
     if 'authenticated' not in st.session_state:
         st.session_state['authenticated'] = False
         st.session_state['mandant'] = None
@@ -105,34 +102,88 @@ def show_login():
     if not st.session_state['authenticated']:
         st.markdown("""
         <style>
-        .main > div {
-            padding-top: 2rem;
+        /* Hintergrundbild mit Blur-Effekt */
+        .stApp::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.pexels.com/photos/7414218/pexels-photo-7414218.jpeg') center/cover;
+            filter: blur(5px);
+            z-index: -1;
         }
-        div[data-testid="column"]:has(h1:contains("Anmeldung")) {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            border: 3px solid var(--vb-primary);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        
+        .stApp {
+            background: transparent;
+        }
+        
+        /* Container transparent machen */
+        .main > div {
+            background: transparent !important;
+            padding-top: 5rem;
+        }
+        
+        /* Labels über den Input-Feldern weiß machen */
+        .stTextInput > label {
+            color: white !important;
+            font-weight: 600 !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
+        }
+        
+        /* Placeholder Text besser sichtbar */
+        .stTextInput > div > div > input::placeholder {
+            color: #6b7280 !important;
+        }
+        
+        /* Help-Text auch weiß */
+        .stTextInput > div > div > small {
+            color: rgba(255, 255, 255, 0.8) !important;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8) !important;
+        }
+        
+        /* Buttons besser sichtbar */
+        .stButton > button {
+            font-weight: 600 !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+        }
+        
+        /* Info-Box anpassen für bessere Lesbarkeit */
+        .stAlert {
+            background: rgba(255, 255, 255, 0.95) !important;
+            border: 2px solid #8B1C1C !important;
         }
         </style>
         """, unsafe_allow_html=True)
         
         col1, col2, col3 = st.columns([1,2,1])
         with col2:
+            # Weißer Kasten NUR für Logo und Anmeldung
             st.markdown("""
-            <div style="background: white; padding: 2rem; border-radius: 12px; border: 3px solid #8B1C1C;">
-            """ + render_logo() + """
+            <div style="
+                background: white;
+                border-radius: 16px;
+                padding: 2rem;
+                margin-bottom: 2rem;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                border: 2px solid #8B1C1C;
+            ">
+            """ + render_logo(size="normal", with_tagline=True) + """
+                <hr style="border: none; border-top: 2px solid #8B1C1C; margin: 1.5rem 0;">
+                <h1 style="text-align: center; color: #1f2937; margin: 0;">Anmeldung</h1>
             </div>
             """, unsafe_allow_html=True)
-            st.title("Anmeldung")
-            st.markdown("---")
             
+            # Anmeldefelder OHNE weißen Kasten
             activation_code = st.text_input("Aktivierungscode", 
                                           placeholder="XXX-XXXX-XXXX-XXXX",
                                           help="Geben Sie Ihren mandantenspezifischen Aktivierungscode ein")
             username = st.text_input("Benutzername", help="Ihr Benutzername für diesen Mandanten")
             password = st.text_input("Passwort", type="password", help="Ihr Passwort")
+            
+            st.markdown("<br>", unsafe_allow_html=True)
             
             col_btn1, col_btn2 = st.columns(2)
             with col_btn1:
@@ -3434,6 +3485,19 @@ def main():
             return
         
         init_session_state()
+        st.markdown("""
+        <style>
+        /* ALLES grau machen */
+        .stApp {
+            background-color: #f9fafb !important;
+        }
+
+        /* Sidebar dunkler */
+        section[data-testid="stSidebar"] {
+            background-color: #e5e7eb !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
         setup_sidebar()
         
         has_downloads = 'excel_file' in st.session_state and st.session_state['excel_file'] is not None
