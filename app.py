@@ -25,6 +25,21 @@ st.set_page_config(
 # buergcontolBASE Branding CSS - Komprimiert
 st.markdown("""<style>[data-testid="stTooltipIcon"],[data-testid="tooltipHoverTarget"],div[role="tooltip"]{position:relative!important;z-index:99999!important}:root{--vb-primary:#B71C1C;--vb-dark:#8B0000;--vb-light:#fee2e2;--vb-gray:#f9fafb}.stApp button:not([title*="help"]):not([role="tab"]):not(:disabled){background-color:var(--vb-primary)!important;color:white!important;border:none!important;border-radius:6px!important;font-weight:600!important}.stApp button:not([title*="help"]):not([role="tab"]):hover:not(:disabled){background-color:var(--vb-dark)!important}button[title="Show help"],button[kind="help"]{background-color:transparent!important}.stApp{background-color:#fafafa}section[data-testid="stSidebar"]{background-color:var(--vb-gray);border-right:3px solid var(--vb-primary)!important}.stSuccess{background-color:var(--vb-light)!important;color:var(--vb-primary)!important;border-left:4px solid var(--vb-primary)!important}.stInfo{background-color:var(--vb-gray)!important;border-left:4px solid var(--vb-primary)!important}[data-testid="metric-container"]{background-color:white;border:2px solid var(--vb-primary);border-radius:8px;padding:1rem}.stTabs [data-baseweb="tab-list"] button[aria-selected="true"]{border-bottom-color:var(--vb-primary)!important}a{color:var(--vb-primary)}input[type="checkbox"]:checked,input[type="radio"]:checked{accent-color:var(--vb-primary)}section[data-testid="stSidebar"] hr{border:none!important;border-top:2px solid var(--vb-primary)!important;margin:1rem 0!important}</style>""", unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* Kompakte Help-Tooltips */
+div[data-baseweb="tooltip"] {
+    max-width: 300px !important;
+    white-space: normal !important;
+}
+
+div[data-baseweb="tooltip"] > div {
+    padding: 8px 12px !important;
+    font-size: 0.875rem !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # Logo als HTML-Komponente
 def render_logo(size="normal", with_tagline=True):
     """Rendert das buergcontrolBASE Logo mit optionalem Tagline"""
@@ -48,8 +63,7 @@ def render_logo(size="normal", with_tagline=True):
         logo_html += f"""
         <div style="margin-top: 10px; text-align: center;">
             <div style="color: #B71C1C; font-size: {tagline_size}; line-height: 1.4;">
-                <div>Bürgschaftskontrolle ohne Risiko.</div>
-                <div style="color: #22c55e;">✓</div>
+                Bürgschaftskontrolle ohne Risiko.
             </div>
         </div>"""
             
@@ -159,25 +173,29 @@ def show_login():
         </style>
         """, unsafe_allow_html=True)
         
-        col1, col2, col3 = st.columns([1,2,1])
+        # Schmalere Spalten: [3,2,3] statt [1,2,1]
+        col1, col2, col3 = st.columns([3, 2, 3])
         with col2:
+            # Container mit fester Breite
+            st.markdown('<div class="login-container">', unsafe_allow_html=True)
+            
             # Weißer Kasten NUR für Logo und Anmeldung
             st.markdown("""
             <div style="
-                background: white;
+                background: #f3f4f6;
                 border-radius: 16px;
-                padding: 2rem;
-                margin-bottom: 2rem;
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
                 box-shadow: 0 10px 30px rgba(0,0,0,0.3);
                 border: 2px solid #B71C1C;
             ">
-            """ + render_logo(size="normal", with_tagline=True) + """
-                <hr style="border: none; border-top: 2px solid #B71C1C; margin: 1.5rem 0;">
-                <h1 style="text-align: center; color: #1f2937; margin: 0;">Anmeldung</h1>
+            """ + render_logo(size="small", with_tagline=True) + """
+                <hr style="border: none; border-top: 2px solid #B71C1C; margin: 1rem 0;">
+                <h2 style="text-align: center; color: #1f2937; margin: 0; font-size: 1.5rem;">Anmeldung</h2>
             </div>
             """, unsafe_allow_html=True)
             
-            # Anmeldefelder OHNE weißen Kasten
+            # Anmeldefelder
             activation_code = st.text_input("Aktivierungscode", 
                                           placeholder="XXX-XXXX-XXXX-XXXX",
                                           help="Geben Sie Ihren mandantenspezifischen Aktivierungscode ein")
@@ -186,27 +204,27 @@ def show_login():
             
             st.markdown("<br>", unsafe_allow_html=True)
             
-            col_btn1, col_btn2 = st.columns(2)
-            with col_btn1:
-                if st.button("🔑 Anmelden", type="primary", use_container_width=True):
-                    mandant_data = validate_activation_code(activation_code)
-                    if mandant_data and check_credentials(username, password, mandant_data):
-                        st.session_state['authenticated'] = True
-                        st.session_state['mandant'] = mandant_data['kunde']
-                        st.session_state['mandant_logo'] = mandant_data.get('logo')
-                        st.session_state['mandant_data'] = mandant_data
-                        st.success("✅ Anmeldung erfolgreich!")
-                        st.rerun()
-                    else:
-                        st.error("❌ Ungültige Anmeldedaten!")
+            # Buttons
+            if st.button("🔑 Anmelden", type="primary", use_container_width=True):
+                mandant_data = validate_activation_code(activation_code)
+                if mandant_data and check_credentials(username, password, mandant_data):
+                    st.session_state['authenticated'] = True
+                    st.session_state['mandant'] = mandant_data['kunde']
+                    st.session_state['mandant_logo'] = mandant_data.get('logo')
+                    st.session_state['mandant_data'] = mandant_data
+                    st.success("✅ Anmeldung erfolgreich!")
+                    st.rerun()
+                else:
+                    st.error("❌ Ungültige Anmeldedaten!")
             
-            with col_btn2:
-                if st.button("ℹ️ Demo-Zugänge", use_container_width=True):
-                    st.info("""
-                    **Demo-Zugänge:**
-                    - Code: `TEST-2024-DEMO-1234`
-                    - User: `test` / Pass: `test123`
-                    """)
+            if st.button("ℹ️ Demo-Zugänge", use_container_width=True):
+                st.info("""
+                **Demo-Zugänge:**
+                - Code: `TEST-2024-DEMO-1234`
+                - User: `test` / Pass: `test123`
+                """)
+            
+            st.markdown('</div>', unsafe_allow_html=True)
         
         st.stop()
 
@@ -2601,7 +2619,7 @@ def setup_sidebar():
     
     with st.sidebar:
         st.markdown("""
-        <div style="background: white; padding: 1rem 2rem; border-radius: 12px; border: 3px solid #B71C1C;">
+        <div style="background: #f3f4f6; padding: 1rem 2rem; border-radius: 12px; border: 3px solid #B71C1C;">
         """ + render_logo(size="small", with_tagline=True) + """
         </div>
         """, unsafe_allow_html=True)
