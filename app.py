@@ -23,7 +23,8 @@ st.set_page_config(
 )
 
 # buergcontolBASE Branding CSS - Komprimiert
-st.markdown("""<style>[data-testid="stTooltipIcon"],[data-testid="tooltipHoverTarget"],div[role="tooltip"]{position:relative!important;z-index:99999!important}:root{--vb-primary:#8B1C1C;--vb-dark:#5C1111;--vb-light:#fee2e2;--vb-gray:#f9fafb}.stApp button:not([title*="help"]):not([role="tab"]):not(:disabled){background-color:var(--vb-primary)!important;color:white!important;border:none!important;border-radius:6px!important;font-weight:600!important}.stApp button:not([title*="help"]):not([role="tab"]):hover:not(:disabled){background-color:var(--vb-dark)!important}button[title="Show help"],button[kind="help"]{background-color:transparent!important}.stApp{background-color:#fafafa}section[data-testid="stSidebar"]{background-color:var(--vb-gray);border-right:3px solid var(--vb-primary)!important}.stSuccess{background-color:var(--vb-light)!important;color:var(--vb-primary)!important;border-left:4px solid var(--vb-primary)!important}.stInfo{background-color:var(--vb-gray)!important;border-left:4px solid var(--vb-primary)!important}[data-testid="metric-container"]{background-color:white;border:2px solid var(--vb-primary);border-radius:8px;padding:1rem}.stTabs [data-baseweb="tab-list"] button[aria-selected="true"]{border-bottom-color:var(--vb-primary)!important}a{color:var(--vb-primary)}input[type="checkbox"]:checked,input[type="radio"]:checked{accent-color:var(--vb-primary)}section[data-testid="stSidebar"] hr{border:none!important;border-top:2px solid var(--vb-primary)!important;margin:1rem 0!important}</style>""", unsafe_allow_html=True)
+st.markdown("""<style>[data-testid="stTooltipIcon"],[data-testid="tooltipHoverTarget"],div[role="tooltip"]{position:relative!important;z-index:99999!important}:root{--vb-primary:#B71C1C;--vb-dark:#8B0000;--vb-light:#fee2e2;--vb-gray:#f9fafb}.stApp button:not([title*="help"]):not([role="tab"]):not(:disabled){background-color:var(--vb-primary)!important;color:white!important;border:none!important;border-radius:6px!important;font-weight:600!important}.stApp button:not([title*="help"]):not([role="tab"]):hover:not(:disabled){background-color:var(--vb-dark)!important}button[title="Show help"],button[kind="help"]{background-color:transparent!important}.stApp{background-color:#fafafa}section[data-testid="stSidebar"]{background-color:var(--vb-gray);border-right:3px solid var(--vb-primary)!important}.stSuccess{background-color:var(--vb-light)!important;color:var(--vb-primary)!important;border-left:4px solid var(--vb-primary)!important}.stInfo{background-color:var(--vb-gray)!important;border-left:4px solid var(--vb-primary)!important}[data-testid="metric-container"]{background-color:white;border:2px solid var(--vb-primary);border-radius:8px;padding:1rem}.stTabs [data-baseweb="tab-list"] button[aria-selected="true"]{border-bottom-color:var(--vb-primary)!important}a{color:var(--vb-primary)}input[type="checkbox"]:checked,input[type="radio"]:checked{accent-color:var(--vb-primary)}section[data-testid="stSidebar"] hr{border:none!important;border-top:2px solid var(--vb-primary)!important;margin:1rem 0!important}</style>""", unsafe_allow_html=True)
+
 # Logo als HTML-Komponente
 def render_logo(size="normal", with_tagline=True):
     """Rendert das buergcontrolBASE Logo mit optionalem Tagline"""
@@ -39,19 +40,19 @@ def render_logo(size="normal", with_tagline=True):
     logo_html = f"""
     <div style="text-align: center; margin: 20px 0;">
         <div style="display: flex; align-items: center; gap: 0; justify-content: center;">
-            <span style="color: #8B1C1C; font-weight: 700; font-size: {font_size};">buergcontrol</span>
+            <span style="color: #B71C1C; font-weight: 700; font-size: {font_size};">buergcontrol</span>
             <span style="color: #4a4a4a; font-weight: 700; font-size: {font_size};">BASE</span>
         </div>"""
     
     if with_tagline:
         logo_html += f"""
         <div style="margin-top: 10px; text-align: center;">
-            <div style="color: #8B1C1C; font-size: {tagline_size}; line-height: 1.4;">
-                <div>Ihre Bürgschaftssicherheit.</div>
-                <div>Der Schutzschirm für Ihre Verwahrlager-Bewilligung.</div>
+            <div style="color: #B71C1C; font-size: {tagline_size}; line-height: 1.4;">
+                <div>Bürgschaftskontrolle ohne Risiko.</div>
+                <div style="color: #22c55e;">✓</div>
             </div>
         </div>"""
-    
+            
     logo_html += "</div>"
     return logo_html
 
@@ -153,7 +154,7 @@ def show_login():
         /* Info-Box anpassen für bessere Lesbarkeit */
         .stAlert {
             background: rgba(255, 255, 255, 0.95) !important;
-            border: 2px solid #8B1C1C !important;
+            border: 2px solid #B71C1C !important;
         }
         </style>
         """, unsafe_allow_html=True)
@@ -168,10 +169,10 @@ def show_login():
                 padding: 2rem;
                 margin-bottom: 2rem;
                 box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-                border: 2px solid #8B1C1C;
+                border: 2px solid #B71C1C;
             ">
             """ + render_logo(size="normal", with_tagline=True) + """
-                <hr style="border: none; border-top: 2px solid #8B1C1C; margin: 1.5rem 0;">
+                <hr style="border: none; border-top: 2px solid #B71C1C; margin: 1.5rem 0;">
                 <h1 style="text-align: center; color: #1f2937; margin: 0;">Anmeldung</h1>
             </div>
             """, unsafe_allow_html=True)
@@ -2600,7 +2601,7 @@ def setup_sidebar():
     
     with st.sidebar:
         st.markdown("""
-        <div style="background: white; padding: 1rem 2rem; border-radius: 12px; border: 3px solid #8B1C1C;">
+        <div style="background: white; padding: 1rem 2rem; border-radius: 12px; border: 3px solid #B71C1C;">
         """ + render_logo(size="small", with_tagline=True) + """
         </div>
         """, unsafe_allow_html=True)
@@ -3511,7 +3512,7 @@ def main():
             orientation="horizontal",
             styles={
                 "container": {"padding": "0!important", "background-color": "#fafafa"},
-                "icon": {"color": "#8B1C1C", "font-size": "18px"},
+                "icon": {"color": "#B71C1C", "font-size": "18px"},
                 "nav-link": {
                     "font-size": "16px", 
                     "text-align": "center", 
@@ -3519,7 +3520,7 @@ def main():
                     "--hover-color": "#fee2e2"
                 },
                 "nav-link-selected": {
-                    "background-color": "#8B1C1C",
+                    "background-color": "#B71C1C",
                     "color": "white"
                 },
             }
