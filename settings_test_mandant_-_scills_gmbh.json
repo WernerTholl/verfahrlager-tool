@@ -1,0 +1,13 @@
+{
+  "2024_2025": {
+    "von": "01.05.2024",
+    "bis": "30.04.2025",
+    "buergschaft": 10000000.0,
+    "ersatz_zollsatz": 12.0,
+    "pauschale": 10000.0,
+    "buergschaft_erhoehung_aktiv": false,
+    "buergschaft_erhoehung_datum": "10.08.2025",
+    "buergschaft_erhoehung_betrag": 0.0
+  },
+  "current_config": "2024_2025"
+}

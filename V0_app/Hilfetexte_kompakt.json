@@ -1,0 +1,789 @@
+{
+    "help_texts": {
+        "login": [
+            {
+                "type": "help",
+                "func": "text_input",
+                "label": "Aktivierungscode",
+                "help": "Geben Sie Ihren mandantenspezifischen Aktivierungscode ein",
+                "line": 199
+            },
+            {
+                "type": "help",
+                "func": "text_input",
+                "label": "Benutzername",
+                "help": "Ihr Benutzername für diesen Mandanten",
+                "line": 202
+            },
+            {
+                "type": "help",
+                "func": "text_input",
+                "label": "Passwort",
+                "help": "Ihr Passwort",
+                "line": 203
+            }
+        ],
+        "bereitstellen": [
+            {
+                "type": "note",
+                "func": "caption",
+                "text": "Pro Leitdatei-Zeile wird immer nur eine Ergebniszeile erstellt",
+                "line": 513
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "**EZA-Spalten-Reduzierung**",
+                "line": 520
+            },
+            {
+                "type": "note",
+                "func": "caption",
+                "text": "Reduziert große EZA-Dateien auf die 13 benötigten Standard-Spalten",
+                "line": 522
+            },
+            {
+                "type": "note",
+                "func": "warning",
+                "text": "⚠️ Spalte 'BEAnteil SumA' nicht gefunden. Fahre ohne Verarbeitung fort.",
+                "line": 1250
+            },
+            {
+                "type": "note",
+                "func": "warning",
+                "text": "⚠️ SUMA-Position-Spalte nicht gefunden. Verwende leeres Feld.",
+                "line": 2190
+            }
+        ],
+        "analyse": [
+            {
+                "type": "note",
+                "func": "caption",
+                "text": "Ermöglicht präzises 3-Kriterien-Matching für IMDC",
+                "line": 530
+            }
+        ],
+        "strukturieren": [
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "📊 Geladene Daten",
+                "help": "Übersicht der geladenen Leitdatei und Verteilung der Anmeldearten. Zeigt wie viele Zeilen pro Anmeldeart verarbeitet werden.",
+                "line": 2671
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "3. NCAR-Versandbeendigung (NCTS TBE)",
+                "help": "Optional: Laden Sie NCAR-Daten hoch, um Transport-MRN und Packstückzahlen automatisch in der Ergebnisliste zu ergänzen. Verbessert die Datenqualität für Zollprüfungen.",
+                "line": 2865
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "4. Kalkulationsdateien hochladen",
+                "help": "Laden Sie die Kalkulationsdateien mit Zollwerten und Abgaben hoch. Nur benötigte Dateien werden aktiviert - basierend auf den gefundenen Anmeldearten in der Leitdatei.",
+                "line": 2983
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "📊 Geladene Daten",
+                "help": "Übersicht der geladenen Leitdatei und Verteilung der Anmeldearten. Zeigt wie viele Zeilen pro Anmeldeart verarbeitet werden.",
+                "line": 2671
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "3. NCAR-Versandbeendigung (NCTS TBE)",
+                "help": "Optional: Laden Sie NCAR-Daten hoch, um Transport-MRN und Packstückzahlen automatisch in der Ergebnisliste zu ergänzen. Verbessert die Datenqualität für Zollprüfungen.",
+                "line": 2865
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "4. Kalkulationsdateien hochladen",
+                "help": "Laden Sie die Kalkulationsdateien mit Zollwerten und Abgaben hoch. Nur benötigte Dateien werden aktiviert - basierend auf den gefundenen Anmeldearten in der Leitdatei.",
+                "line": 2983
+            },
+            {
+                "type": "note",
+                "func": "caption",
+                "text": "Wird nur informativ berechnet, nicht Teil der Bürgschaft",
+                "line": 504
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "**Verwahrungsfrist**",
+                "line": 506
+            },
+            {
+                "type": "note",
+                "func": "caption",
+                "text": "Für realistische Bürgschaftswerte bei zollfreien Waren",
+                "line": 526
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "**Bürgschaftssaldo**",
+                "line": 533
+            },
+            {
+                "type": "note",
+                "func": "caption",
+                "text": "3 Excel-Sheets: Ergebnis, Bewegungsdetails, Tageszusammenfassung",
+                "line": 535
+            },
+            {
+                "type": "note",
+                "func": "caption",
+                "text": "Interne Konsolidierungen ohne Bürgschaftsrelevanz",
+                "line": 543
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "**Enthaltene Sheets:**\n        - **Ergebnis**: Alle berechneten Positionen mit Tagessalden\n        - **Bewegungsdetails**: Chronologische Ein-/Ausgänge\n        - **Tageszusammenfassung**: Tägliche Salden mit Extremwerten",
+                "line": 596
+            }
+        ],
+        "exportieren": [
+            {
+                "type": "help",
+                "func": "file_uploader",
+                "label": "Leitdatei",
+                "help": "Wählen Sie die SumA-Leitdatei aus. Format: Excel (.xlsx oder .xls)",
+                "line": 2762
+            },
+            {
+                "type": "help",
+                "func": "file_uploader",
+                "label": "NCAR-Datei",
+                "help": "NCTS-Export mit Versandbeendigungen. Benötigte Spalten: Registriernr.-SumA, RegistriernNr./MRN, Anzahl Packstücke",
+                "line": 2879
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "ℹ️ Noch keine Dokumente zum Download verfügbar.",
+                "line": 555
+            },
+            {
+                "type": "note",
+                "func": "success",
+                "text": "✅ Ihre Dokumente sind bereit zum Download!",
+                "line": 564
+            },
+            {
+                "type": "note",
+                "func": "success",
+                "text": "✅ Dokumentation wurde erstellt!",
+                "line": 617
+            },
+            {
+                "type": "note",
+                "func": "error",
+                "text": "❌ Dokumentation konnte nicht erstellt werden",
+                "line": 620
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "**Enthält:**\n            - Prozessdokumentation\n            - Verarbeitungsstatistiken\n            - Konfigurationsübersicht\n            - Hinweise für den Zoll",
+                "line": 631
+            },
+            {
+                "type": "note",
+                "func": "warning",
+                "text": "⚠️ Hinweis: Die Dokumentation benötigt die Datei 'Zoll_Dokumentation_Template.docx' im Programmverzeichnis.",
+                "line": 639
+            },
+            {
+                "type": "note",
+                "func": "success",
+                "text": "✅ Excel-Datei wurde erfolgreich erstellt! Wechseln Sie zum Downloads-Tab.",
+                "line": 2605
+            },
+            {
+                "type": "note",
+                "func": "success",
+                "text": "📥 **Downloads bereit!**",
+                "line": 2688
+            },
+            {
+                "type": "note",
+                "func": "caption",
+                "text": "Klicken Sie auf '2️⃣ Downloads' oben",
+                "line": 2689
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "✅ Excel-Datei bereits erstellt. Wechseln Sie zum **Downloads-Tab** um sie herunterzuladen.",
+                "line": 2775
+            },
+            {
+                "type": "note",
+                "func": "error",
+                "text": "❌ Dokumentation konnte nicht erstellt werden",
+                "line": 3404
+            },
+            {
+                "type": "note",
+                "func": "success",
+                "text": "✅ Downloads bereit!",
+                "line": 3548
+            }
+        ],
+        "history": [],
+        "einstellungen": [
+            {
+                "type": "help",
+                "func": "title",
+                "label": "⚙️ Ersteinrichtung",
+                "help": "Grundkonfiguration für Ihren Mandanten. Diese Werte gelten für alle zukünftigen Verarbeitungen.",
+                "line": 290
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "Bewilligungszeitraum",
+                "help": "Der genehmigte Zeitraum für Ihre Bürgschaft. Nur Vorgänge in diesem Zeitraum werden verarbeitet.",
+                "line": 297
+            },
+            {
+                "type": "help",
+                "func": "date_input",
+                "label": "Bis",
+                "help": "Ende des Bewilligungszeitraums",
+                "line": 305
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "Finanzielle Parameter",
+                "help": "Grundlegende Werte für die Bürgschaftsberechnung",
+                "line": 308
+            },
+            {
+                "type": "help",
+                "func": "number_input",
+                "label": "Bürgschafts-Startsumme (€)",
+                "help": "Die von Ihrer Bank/Versicherung bereitgestellte Bürgschaftssumme",
+                "line": 312
+            },
+            {
+                "type": "help",
+                "func": "number_input",
+                "label": "Ersatz-Zollsatz bei 0% (%)",
+                "help": "Wird automatisch verwendet, wenn Waren mit 0% Zollsatz gefunden werden. Empfehlung: 12%",
+                "line": 320
+            },
+            {
+                "type": "help",
+                "func": "number_input",
+                "label": "Pauschalbetrag (€)",
+                "help": "Bürgschaftsbetrag für Positionen ohne ermittelbaren Zollwert. Verhindert 0€-Einträge in der Berechnung.",
+                "line": 330
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "Bürgschaftserhöhung (optional)",
+                "help": "Für unterjährige Erhöhungen der Bürgschaftssumme, z.B. bei Geschäftswachstum",
+                "line": 339
+            },
+            {
+                "type": "help",
+                "func": "checkbox",
+                "label": "Bürgschaftserhöhung aktivieren",
+                "help": "Aktivieren Sie diese Option, wenn die Bürgschaft während des Bewilligungszeitraums erhöht wurde",
+                "line": 340
+            },
+            {
+                "type": "help",
+                "func": "number_input",
+                "label": "Erhöhungsbetrag (€)",
+                "help": "Um welchen Betrag wurde die Bürgschaft erhöht?",
+                "line": 352
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "Mandanten-Einstellungen bearbeiten",
+                "help": "Ändern Sie hier die Grundkonfiguration für Ihre Bürgschaftsberechnung",
+                "line": 397
+            },
+            {
+                "type": "help",
+                "func": "markdown",
+                "label": "### Bewilligungszeitraum",
+                "help": "Der genehmigte Zeitraum für Ihre Bürgschaft",
+                "line": 399
+            },
+            {
+                "type": "help",
+                "func": "markdown",
+                "label": "### Finanzielle Parameter",
+                "help": "Grundlegende Werte für die Bürgschaftsberechnung",
+                "line": 414
+            },
+            {
+                "type": "help",
+                "func": "markdown",
+                "label": "### Bürgschaftserhöhung (optional)",
+                "help": "Für unterjährige Erhöhungen der Bürgschaftssumme",
+                "line": 440
+            },
+            {
+                "type": "help",
+                "func": "date_input",
+                "label": "Datum der Erhöhung",
+                "help": "Ab wann gilt die erhöhte Bürgschaft?",
+                "line": 454
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "📊 Erweiterte Informationen",
+                "help": "Zusätzliche Verarbeitungsparameter und Einstellungen",
+                "line": 495
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "6. Ergebnisse",
+                "help": "Übersicht aller berechneten Werte für die Bürgschaftsbelastung. Hier sehen Sie die Zusammenfassung aller verarbeiteten Vorgänge.",
+                "line": 2314
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "6.1 Verarbeitungsergebnisse",
+                "help": "Anzahl der erstellten Zeilen pro Anmeldeart. 'KEIN MATCH' bedeutet, dass keine passenden Importdaten gefunden wurden und daher der Pauschalbetrag verwendet wurde.",
+                "line": 2316
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "6.2 Verarbeitungsprotokoll",
+                "help": "Detaillierte Aufschlüsselung der Verarbeitung: Wie viele Positionen wurden in den Kalkulationsdateien gefunden (Mit Match) und wie viele mussten mit dem Pauschalbetrag berechnet werden (Ohne Match).",
+                "line": 2359
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "6.3 Finanzielle Zusammenfassung",
+                "help": "Gesamtsummen aller Zollwerte und Abgaben. Diese Werte bilden die Grundlage für die Bürgschaftsbelastung. Die EUSt wird separat ausgewiesen und ist nicht Teil der Bürgschaftsberechnung.",
+                "line": 2451
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "6.4 Bürgschaftssaldo-Berechnung",
+                "help": "Chronologische Darstellung aller Ein- und Ausgänge mit täglichen Salden. Zeigt die Entwicklung der Bürgschaftsauslastung über den gesamten Zeitraum mit Höchst- und Tiefstständen.",
+                "line": 2528
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "⚙️ Konfiguration",
+                "help": "Ihre aktuellen Mandanten-Einstellungen für die Bürgschaftsberechnung. Diese Werte bestimmen den Verarbeitungszeitraum und die Berechnungsparameter.",
+                "line": 2640
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "💡 Geschäftsregeln",
+                "help": "Automatische Regeln die bei der Verarbeitung angewendet werden, um realistische Bürgschaftswerte zu gewährleisten.",
+                "line": 2662
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "1. Leitdatei (SumA) hochladen",
+                "help": "Excel-Export aus SumA mit allen Verwahrungsvorgängen. Diese Datei enthält alle Bewegungen und bildet die Grundlage für die Bürgschaftsberechnung.",
+                "line": 2738
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "2. Bürgschaftszeitraum auswählen",
+                "help": "Filtern Sie die Leitdatei auf den bewilligten Zeitraum. Nur Vorgänge mit Gestellungsdatum in diesem Zeitraum werden verarbeitet.",
+                "line": 2779
+            },
+            {
+                "type": "help",
+                "func": "button",
+                "label": "🚀 Verarbeitung starten",
+                "help": "Startet die Berechnung der Bürgschaftsbelastung mit allen hochgeladenen Dateien",
+                "line": 3198
+            },
+            {
+                "type": "help",
+                "func": "title",
+                "label": "⚙️ Ersteinrichtung",
+                "help": "Grundkonfiguration für Ihren Mandanten. Diese Werte gelten für alle zukünftigen Verarbeitungen.",
+                "line": 290
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "Bewilligungszeitraum",
+                "help": "Der genehmigte Zeitraum für Ihre Bürgschaft. Nur Vorgänge in diesem Zeitraum werden verarbeitet.",
+                "line": 297
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "Finanzielle Parameter",
+                "help": "Grundlegende Werte für die Bürgschaftsberechnung",
+                "line": 308
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "Bürgschaftserhöhung (optional)",
+                "help": "Für unterjährige Erhöhungen der Bürgschaftssumme, z.B. bei Geschäftswachstum",
+                "line": 339
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "Mandanten-Einstellungen bearbeiten",
+                "help": "Ändern Sie hier die Grundkonfiguration für Ihre Bürgschaftsberechnung",
+                "line": 397
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "📊 Erweiterte Informationen",
+                "help": "Zusätzliche Verarbeitungsparameter und Einstellungen",
+                "line": 495
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "6. Ergebnisse",
+                "help": "Übersicht aller berechneten Werte für die Bürgschaftsbelastung. Hier sehen Sie die Zusammenfassung aller verarbeiteten Vorgänge.",
+                "line": 2314
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "6.1 Verarbeitungsergebnisse",
+                "help": "Anzahl der erstellten Zeilen pro Anmeldeart. 'KEIN MATCH' bedeutet, dass keine passenden Importdaten gefunden wurden und daher der Pauschalbetrag verwendet wurde.",
+                "line": 2316
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "6.2 Verarbeitungsprotokoll",
+                "help": "Detaillierte Aufschlüsselung der Verarbeitung: Wie viele Positionen wurden in den Kalkulationsdateien gefunden (Mit Match) und wie viele mussten mit dem Pauschalbetrag berechnet werden (Ohne Match).",
+                "line": 2359
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "6.3 Finanzielle Zusammenfassung",
+                "help": "Gesamtsummen aller Zollwerte und Abgaben. Diese Werte bilden die Grundlage für die Bürgschaftsbelastung. Die EUSt wird separat ausgewiesen und ist nicht Teil der Bürgschaftsberechnung.",
+                "line": 2451
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "6.4 Bürgschaftssaldo-Berechnung",
+                "help": "Chronologische Darstellung aller Ein- und Ausgänge mit täglichen Salden. Zeigt die Entwicklung der Bürgschaftsauslastung über den gesamten Zeitraum mit Höchst- und Tiefstständen.",
+                "line": 2528
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "⚙️ Konfiguration",
+                "help": "Ihre aktuellen Mandanten-Einstellungen für die Bürgschaftsberechnung. Diese Werte bestimmen den Verarbeitungszeitraum und die Berechnungsparameter.",
+                "line": 2640
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "💡 Geschäftsregeln",
+                "help": "Automatische Regeln die bei der Verarbeitung angewendet werden, um realistische Bürgschaftswerte zu gewährleisten.",
+                "line": 2662
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "1. Leitdatei (SumA) hochladen",
+                "help": "Excel-Export aus SumA mit allen Verwahrungsvorgängen. Diese Datei enthält alle Bewegungen und bildet die Grundlage für die Bürgschaftsberechnung.",
+                "line": 2738
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "2. Bürgschaftszeitraum auswählen",
+                "help": "Filtern Sie die Leitdatei auf den bewilligten Zeitraum. Nur Vorgänge mit Gestellungsdatum in diesem Zeitraum werden verarbeitet.",
+                "line": 2779
+            },
+            {
+                "type": "note",
+                "func": "warning",
+                "text": "⚠️ Keine config.json gefunden. Nutze Demo-Konfiguration.",
+                "line": 94
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "Bitte konfigurieren Sie die Grundeinstellungen für Ihren Mandanten.",
+                "line": 291
+            },
+            {
+                "type": "note",
+                "func": "success",
+                "text": "✅ Einstellungen gespeichert!",
+                "line": 380
+            },
+            {
+                "type": "note",
+                "func": "success",
+                "text": "✅ Einstellungen wurden gespeichert!",
+                "line": 490
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "💡 **Hinweis:** Diese Einstellungen sind fest konfiguriert und gewährleisten eine konsistente Verarbeitung\n    gemäß den Zollvorschriften. Änderungen sind nur bei den Basis-Einstellungen möglich.",
+                "line": 545
+            },
+            {
+                "type": "note",
+                "func": "success",
+                "text": "✅ Geschäftsregeln angewendet (Mindestabgaben, Pauschalen)",
+                "line": 2267
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "⚙️ Einstellungen finden Sie im Tab **'Einstellungen'** oben",
+                "line": 2658
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "• **Mindestabgabe:** 1 €\n        • **Bei 0 €:** Pauschale\n        • **Zölle = Gesamtabgaben**",
+                "line": 2663
+            }
+        ],
+        "allgemein": [
+            {
+                "type": "help",
+                "func": "button",
+                "label": "❌ Neu starten",
+                "help": "Löscht alle Daten und startet neu",
+                "line": 2711
+            },
+            {
+                "type": "help",
+                "func": "button",
+                "label": "🔍 Filter anwenden",
+                "help": "Filtert die Leitdatei auf den gewählten Zeitraum",
+                "line": 2794
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "5. Datenverarbeitung - Übersicht",
+                "help": "Zeigt alle geladenen Dateien und deren Status. Prüfen Sie, ob alle benötigten Dateien hochgeladen wurden, bevor Sie die Verarbeitung starten.",
+                "line": 3134
+            },
+            {
+                "type": "help",
+                "func": "subheader",
+                "label": "5. Datenverarbeitung - Übersicht",
+                "help": "Zeigt alle geladenen Dateien und deren Status. Prüfen Sie, ob alle benötigten Dateien hochgeladen wurden, bevor Sie die Verarbeitung starten.",
+                "line": 3134
+            },
+            {
+                "type": "note",
+                "func": "success",
+                "text": "✅ Anmeldung erfolgreich!",
+                "line": 215
+            },
+            {
+                "type": "note",
+                "func": "error",
+                "text": "❌ Ungültige Anmeldedaten!",
+                "line": 218
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "**Demo-Zugänge:**\n                - Code: `TEST-2024-DEMO-1234`\n                - User: `test` / Pass: `test123`",
+                "line": 221
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "👆 Klicken Sie auf 'Zurück zur Verarbeitung' um fortzufahren.",
+                "line": 492
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "**EUSt-Satz**",
+                "line": 502
+            },
+            {
+                "type": "note",
+                "func": "caption",
+                "text": "Gestellungsdatum + 90 Tage",
+                "line": 508
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "**WIDS-Verarbeitung**",
+                "line": 511
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "**Leere Anmeldearten**",
+                "line": 515
+            },
+            {
+                "type": "note",
+                "func": "caption",
+                "text": "Gilt für (leer), APDC, AVDC und NCAR",
+                "line": 517
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "**Zollsatz 0% Ersetzung**",
+                "line": 524
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "**BE-Anteil Verarbeitung**",
+                "line": 528
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "**NCAR-Enhancement**",
+                "line": 537
+            },
+            {
+                "type": "note",
+                "func": "caption",
+                "text": "Ergänzt automatisch Transport-MRN und Packstückzahlen",
+                "line": 539
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "**ATB-Filter**",
+                "line": 541
+            },
+            {
+                "type": "note",
+                "func": "success",
+                "text": "✨ NCAR-Daten wurden automatisch ergänzt",
+                "line": 604
+            },
+            {
+                "type": "note",
+                "func": "success",
+                "text": "✅ Datenverarbeitung initialisiert",
+                "line": 2167
+            },
+            {
+                "type": "note",
+                "func": "success",
+                "text": "✅ Daten vorbereitet und MRN-Werte bereinigt",
+                "line": 2195
+            },
+            {
+                "type": "note",
+                "func": "warning",
+                "text": "⚠️ Keine Daten zum Verarbeiten gefunden.",
+                "line": 2290
+            },
+            {
+                "type": "note",
+                "func": "warning",
+                "text": "⏳ Verarbeitung läuft...",
+                "line": 2684
+            },
+            {
+                "type": "note",
+                "func": "warning",
+                "text": "Wirklich alle Daten löschen?",
+                "line": 2716
+            },
+            {
+                "type": "note",
+                "func": "caption",
+                "text": "© Scills GmbH 2025",
+                "line": 2731
+            },
+            {
+                "type": "note",
+                "func": "warning",
+                "text": "⚠️ Keine Daten im gewählten Zeitraum gefunden!",
+                "line": 2808
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "👆 Bitte wählen Sie einen Zeitraum und klicken Sie auf 'Filter anwenden'",
+                "line": 2824
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "Laden Sie eine NCAR-Datei hoch, um Transport-MRN und Packstücke automatisch zu ergänzen",
+                "line": 2877
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "Nicht benötigt",
+                "line": 3120
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "✨ NCAR-Datei: Nicht hochgeladen (optional)",
+                "line": 3172
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "🔄 Verarbeitung wurde gestartet...",
+                "line": 3200
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "ℹ️ Noch keine Historie vorhanden.",
+                "line": 3286
+            },
+            {
+                "type": "note",
+                "func": "caption",
+                "text": "Wählen Sie einen Eintrag aus der Liste",
+                "line": 3297
+            },
+            {
+                "type": "note",
+                "func": "info",
+                "text": "👈 Wählen Sie links einen Eintrag aus, um Details anzuzeigen",
+                "line": 3494
+            }
+        ]
+    }
+}

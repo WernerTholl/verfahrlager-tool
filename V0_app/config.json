@@ -1,0 +1,8 @@
+{
+  "TEST-2024-DEMO-1234": {
+    "kunde": "Test Mandant - Scills GmbH",
+    "logo": "logos/Test.png",
+    "user": "test",
+    "pass": "test123"
+  }
+}

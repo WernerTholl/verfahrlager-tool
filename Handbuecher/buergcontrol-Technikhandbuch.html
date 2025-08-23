@@ -1,0 +1,2543 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>buergcontrolBASE v1.0 - Technisches Handbuch</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Print Styles */
+        @media print {
+            .nav-sidebar {
+                display: none;
+            }
+            
+            .content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .back-to-top {
+                display: none;
+            }
+            
+            table {
+                page-break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+            
+            .ascii-box {
+                page-break-inside: avoid;
+            }
+        }
+        
+        /* Responsive Tables */
+        @media screen and (max-width: 1200px) {
+            table {
+                font-size: 0.9em;
+            }
+            
+            table th, table td {
+                padding: 10px 12px;
+            }
+        }
+        
+        @media screen and (max-width: 768px) {
+            .nav-sidebar {
+                display: none;
+            }
+            
+            .content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            table {
+                font-size: 0.85em;
+            }
+            
+            table th, table td {
+                padding: 8px;
+            }
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9fafb;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Navigation Sidebar */
+        .nav-sidebar {
+            width: 350px;
+            background: white;
+            border-right: 3px solid #8B1C1C;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .nav-sidebar h2 {
+            color: #8B1C1C;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .nav-section {
+            margin-bottom: 15px;
+        }
+        
+        .nav-section > a {
+            display: block;
+            color: #8B1C1C;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .nav-section > a:hover {
+            background: #fee2e2;
+        }
+        
+        .nav-subsection {
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+        
+        .nav-subsection a {
+            display: block;
+            color: #666;
+            text-decoration: none;
+            padding: 5px 12px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .nav-subsection a:hover {
+            color: #8B1C1C;
+            background: #f9fafb;
+        }
+        
+        /* Content Area */
+        .content {
+            margin-left: 370px;
+            padding: 40px;
+            max-width: 1000px;
+        }
+        
+        h1 {
+            color: #8B1C1C;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            color: #8B1C1C;
+            font-size: 2rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+        }
+        
+        h3 {
+            color: #5C1111;
+            font-size: 1.5rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        h4 {
+            color: #666;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        .tagline {
+            color: #8B1C1C;
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+        
+        /* Special Elements */
+        .info-box {
+            background: #fee2e2;
+            border-left: 4px solid #8B1C1C;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .warning-box {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .success-box {
+            background: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        code {
+            background: #f3f4f6;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #8B1C1C;
+            border: 1px solid #e5e7eb;
+        }
+        
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+            line-height: 1.4;
+        }
+        
+        .ascii-box {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            white-space: pre;
+            overflow-x: auto;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        /* Modern Table Styles */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 30px 0;
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        table::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8B1C1C 0%, #dc2626 50%, #8B1C1C 100%);
+        }
+        
+        table thead {
+            background: linear-gradient(135deg, #8B1C1C 0%, #991b1b 100%);
+            color: white;
+            position: relative;
+        }
+        
+        table thead::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        table th {
+            padding: 18px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+            letter-spacing: 0.5px;
+            position: relative;
+            text-transform: uppercase;
+            font-size: 0.85em;
+        }
+        
+        table th:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 20%;
+            height: 60%;
+            width: 1px;
+            background: rgba(255,255,255,0.15);
+        }
+        
+        table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        table tbody tr {
+            transition: all 0.2s ease;
+        }
+        
+        table tbody tr:nth-child(even) {
+            background: #fafbfc;
+        }
+        
+        table tbody tr:hover {
+            background: linear-gradient(90deg, #fff5f5 0%, #fee2e2 100%);
+            transform: scale(1.01);
+            box-shadow: 0 3px 10px rgba(139, 28, 28, 0.08);
+        }
+        
+        table tbody tr:hover td {
+            color: #5C1111;
+        }
+        
+        table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Special Table Cell Styles */
+        table td:first-child {
+            font-weight: 600;
+            color: #5C1111;
+            position: relative;
+            padding-left: 24px;
+        }
+        
+        table td:first-child::before {
+            content: '▸';
+            position: absolute;
+            left: 12px;
+            color: #8B1C1C;
+            font-size: 0.8em;
+            transition: transform 0.2s ease;
+        }
+        
+        table tbody tr:hover td:first-child::before {
+            transform: translateX(3px);
+        }
+        
+        table code {
+            background: #fee2e2;
+            color: #8B1C1C;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 500;
+            border: 1px solid rgba(139, 28, 28, 0.2);
+        }
+        
+        /* Compact Tables */
+        table.compact td {
+            padding: 10px 14px;
+        }
+        
+        /* Center aligned cells */
+        table td.center, table th.center {
+            text-align: center;
+        }
+        
+        /* Number cells */
+        table td.number {
+            text-align: right;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            font-weight: 500;
+            color: #1e293b;
+        }
+        
+        /* Status cells */
+        table td.status-ok {
+            text-align: center;
+            color: #22c55e;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        table td.status-skip {
+            text-align: center;
+            color: #6b7280;
+            font-weight: bold;
+        }
+        
+        /* Special table styles */
+        .table-modern {
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .table-modern thead {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+        
+        .table-stats thead {
+            background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+        }
+        
+        .table-warning thead {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        }
+        
+        .table-success thead {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+        }
+        
+        /* Highlight rows */
+        table tbody tr.highlight {
+            background: #fef3c7 !important;
+            font-weight: 600;
+        }
+        
+        table tbody tr.highlight:hover {
+            background: linear-gradient(90deg, #fef3c7 0%, #fde68a 100%) !important;
+        }
+        
+        /* Summary rows */
+        table tbody tr.summary {
+            background: #1f2937 !important;
+            color: white;
+            font-weight: bold;
+            border-top: 2px solid #8B1C1C;
+        }
+        
+        table tbody tr.summary td {
+            border-bottom: none;
+            padding: 18px 16px;
+        }
+        
+        table tbody tr.summary:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Icon integration in tables */
+        .table-icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            vertical-align: middle;
+            background: #fee2e2;
+            border-radius: 4px;
+            text-align: center;
+            line-height: 24px;
+            font-size: 0.9em;
+            color: #8B1C1C;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        /* Step Numbers */
+        .step-number {
+            display: inline-block;
+            background: #8B1C1C;
+            color: white;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        /* Tab indicators */
+        .tab-indicator {
+            display: inline-block;
+            background: #8B1C1C;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-right: 5px;
+        }
+        
+        /* Back to top */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #8B1C1C;
+            color: white;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-decoration: none;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        /* Metric display */
+        .metric {
+            background: white;
+            border: 2px solid #8B1C1C;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .metric-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .metric-value {
+            color: #8B1C1C;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        /* Diagram Box */
+        .diagram-box {
+            background: white;
+            border: 2px solid #8B1C1C;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .diagram-title {
+            color: #8B1C1C;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        /* Flow diagrams with ASCII-style */
+        .flow-diagram {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+            color: #1f2937;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .flow-box {
+            display: inline-block;
+            background: #fee2e2;
+            border: 2px solid #8B1C1C;
+            border-radius: 6px;
+            padding: 8px 16px;
+            margin: 5px;
+            font-weight: 600;
+        }
+        
+        .flow-arrow {
+            color: #8B1C1C;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        
+        /* Formula Box */
+        .formula-box {
+            background: #f3f4f6;
+            border: 2px dashed #8B1C1C;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            text-align: center;
+            color: #1f2937;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Sidebar -->
+        <nav class="nav-sidebar">
+            <h2>🔧 Technisches Handbuch</h2>
+            
+            <div class="nav-section">
+                <a href="#architektur">1. Architektur & Datenfluss</a>
+                <div class="nav-subsection">
+                    <a href="#system-overview">Systemübersicht</a>
+                    <a href="#session-state">Session State</a>
+                    <a href="#workflow">Workflow</a>
+                    <a href="#persistenz">Datei-Persistenz</a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <a href="#dateiformate">2. Dateiformate & Schnittstellen</a>
+                <div class="nav-subsection">
+                    <a href="#leitdatei">Leitdatei (SumA)</a>
+                    <a href="#import-eza">Import EZA</a>
+                    <a href="#import-zl">Import ZL/VAV</a>
+                    <a href="#ncts">NCTS</a>
+                    <a href="#ncar">NCAR</a>
+                    <a href="#excel-output">Excel-Output</a>
+                    <a href="#word-platzhalter">Word-Platzhalter</a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <a href="#matching">3. Matching-Algorithmen</a>
+                <div class="nav-subsection">
+                    <a href="#anmeldearten-overview">Anmeldearten-Übersicht</a>
+                    <a href="#imdc-matching">IMDC-Matching</a>
+                    <a href="#wids-matching">WIDS-Matching</a>
+                    <a href="#ipdc-matching">IPDC-Verarbeitung</a>
+                    <a href="#ncdp-matching">NCDP-Matching</a>
+                    <a href="#pauschale-arten">Pauschale Arten</a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <a href="#berechnungen">4. Berechnungslogik</a>
+                <div class="nav-subsection">
+                    <a href="#zoll-berechnungen">Zollberechnungen</a>
+                    <a href="#geschaeftsregeln">Geschäftsregeln</a>
+                    <a href="#wids-zollwert">WIDS-Zollwert</a>
+                    <a href="#konstanten">Konstanten</a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <a href="#validierungen">5. Validierungen & Fehler</a>
+                <div class="nav-subsection">
+                    <a href="#import-aktivierung">Import-Aktivierung</a>
+                    <a href="#fehlermeldungen">Fehlermeldungen</a>
+                    <a href="#mrn-bereinigung">MRN-Bereinigung</a>
+                    <a href="#filter-regeln">Filter-Regeln</a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <a href="#geschaeftsregeln-detail">6. Geschäftsregeln</a>
+                <div class="nav-subsection">
+                    <a href="#statistik-anzeige">Statistik-Anzeige</a>
+                    <a href="#info-boxen">Info-Boxen</a>
+                    <a href="#sortierung">Sortierung</a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <a href="#be-anteil">7. BE-Anteil</a>
+                <div class="nav-subsection">
+                    <a href="#be-format">BE-Format</a>
+                    <a href="#be-verarbeitung">BE-Verarbeitung</a>
+                    <a href="#be-matching">3-Kriterien-Match</a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <a href="#buergschaftssaldo">8. Bürgschaftssaldo</a>
+                <div class="nav-subsection">
+                    <a href="#bewegungstabelle">Bewegungstabelle</a>
+                    <a href="#tagessaldo">Tagessaldo</a>
+                    <a href="#auslastung">Auslastungsberechnung</a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <a href="#word-export">9. Zoll-Dokumentation</a>
+                <div class="nav-subsection">
+                    <a href="#template">Template-System</a>
+                    <a href="#platzhalter-liste">Platzhalter-Liste</a>
+                    <a href="#logo-integration">Logo-Integration</a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <a href="#historie">10. Historie-System</a>
+                <div class="nav-subsection">
+                    <a href="#historie-datei">Dateiformat</a>
+                    <a href="#historie-speicherung">Speicherung</a>
+                    <a href="#historie-anzeige">Anzeige</a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <a href="#settings">11. Settings & Mandanten</a>
+                <div class="nav-subsection">
+                    <a href="#ersteinrichtung">Ersteinrichtung</a>
+                    <a href="#konfiguration">Konfiguration</a>
+                    <a href="#erweiterte-info">Erweiterte Info</a>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Main Content -->
+        <main class="content">
+            <h1>buergcontrolBASE v1.0 - Technisches Handbuch</h1>
+            <p class="tagline">Technische Dokumentation für Entwickler und Administratoren</p>
+            
+            <section id="architektur">
+                <h2>1. Architektur & Datenfluss</h2>
+                
+                <h3 id="system-overview">Systemübersicht</h3>
+                
+                <div class="diagram-box">
+                    <div class="diagram-title">System-Architektur</div>
+                    <div class="flow-diagram">
+                        <div class="flow-box">Login Screen</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">Streamlit App</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">4 Haupttabs</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">Session State</div>
+                        <br><br>
+                        <div class="flow-box">Pandas Processing</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-box">Excel Export</div>
+                        <br>
+                        <div class="flow-arrow">↘</div>
+                        <div class="flow-box">Word Export</div>
+                        <br><br>
+                        <strong>Persistenz-Layer:</strong><br>
+                        <div class="flow-box">config.json</div>
+                        <div class="flow-box">settings_[mandant].json</div>
+                        <div class="flow-box">historie_[mandant].json</div>
+                    </div>
+                </div>
+                
+                <h3 id="session-state">Session State Variablen</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 25%;">Variable</th>
+                            <th style="width: 15%;">Typ</th>
+                            <th style="width: 20%;">Default</th>
+                            <th style="width: 40%;">Beschreibung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>df_leit</code></td>
+                            <td>DataFrame</td>
+                            <td>None</td>
+                            <td>Gefilterte Leitdatei (nur Bewilligungszeitraum)</td>
+                        </tr>
+                        <tr>
+                            <td><code>df_leit_unfiltered</code></td>
+                            <td>DataFrame</td>
+                            <td>None</td>
+                            <td>Original-Leitdatei (alle Zeilen)</td>
+                        </tr>
+                        <tr>
+                            <td><code>df_import_eza</code></td>
+                            <td>DataFrame</td>
+                            <td>None</td>
+                            <td>Import EZA-Datei (mit BE-Anteil-Verarbeitung)</td>
+                        </tr>
+                        <tr>
+                            <td><code>df_import_zl</code></td>
+                            <td>DataFrame</td>
+                            <td>None</td>
+                            <td>Import ZL/VAV-Datei</td>
+                        </tr>
+                        <tr>
+                            <td><code>df_ncts</code></td>
+                            <td>DataFrame</td>
+                            <td>None</td>
+                            <td>NCTS-Datei mit Sicherheiten</td>
+                        </tr>
+                        <tr>
+                            <td><code>df_ncar</code></td>
+                            <td>DataFrame</td>
+                            <td>None</td>
+                            <td>NCAR-Enhancement-Datei</td>
+                        </tr>
+                        <tr>
+                            <td><code>excel_file</code></td>
+                            <td>bytes</td>
+                            <td>None</td>
+                            <td>Generierte Excel-Datei</td>
+                        </tr>
+                        <tr>
+                            <td><code>doc_file</code></td>
+                            <td>bytes</td>
+                            <td>None</td>
+                            <td>Generierte Word-Dokumentation</td>
+                        </tr>
+                        <tr>
+                            <td><code>stats</code></td>
+                            <td>dict</td>
+                            <td>{}</td>
+                            <td>Statistiken aus Leitdatei</td>
+                        </tr>
+                        <tr>
+                            <td><code>processing_stats</code></td>
+                            <td>dict</td>
+                            <td>{}</td>
+                            <td>Verarbeitungsstatistiken</td>
+                        </tr>
+                        <tr>
+                            <td><code>ziel_sorted</code></td>
+                            <td>DataFrame</td>
+                            <td>None</td>
+                            <td>Verarbeitungsergebnis</td>
+                        </tr>
+                        <tr>
+                            <td><code>processing_active</code></td>
+                            <td>bool</td>
+                            <td>False</td>
+                            <td>Verhindert Doppelstart</td>
+                        </tr>
+                        <tr>
+                            <td><code>datum_filter_confirmed</code></td>
+                            <td>bool</td>
+                            <td>False</td>
+                            <td>Zeitfilter angewendet</td>
+                        </tr>
+                        <tr>
+                            <td><code>von_datum</code></td>
+                            <td>date</td>
+                            <td>01.05.2024</td>
+                            <td>Bewilligungszeitraum Start</td>
+                        </tr>
+                        <tr>
+                            <td><code>bis_datum</code></td>
+                            <td>date</td>
+                            <td>30.04.2025</td>
+                            <td>Bewilligungszeitraum Ende</td>
+                        </tr>
+                        <tr>
+                            <td><code>startbuergschaft</code></td>
+                            <td>float</td>
+                            <td>0.0</td>
+                            <td>Bürgschafts-Startsumme</td>
+                        </tr>
+                        <tr>
+                            <td><code>pauschalbetrag</code></td>
+                            <td>float</td>
+                            <td>10000.0</td>
+                            <td>Pauschale für 0€-Positionen</td>
+                        </tr>
+                        <tr>
+                            <td><code>zollsatz_ersatz</code></td>
+                            <td>float</td>
+                            <td>0.12</td>
+                            <td>Ersatz-Zollsatz (12%)</td>
+                        </tr>
+                        <tr>
+                            <td><code>eust_satz</code></td>
+                            <td>float</td>
+                            <td>0.19</td>
+                            <td>EUSt-Satz (fest 19%)</td>
+                        </tr>
+                        <tr>
+                            <td><code>verwahrungsfrist_tage</code></td>
+                            <td>int</td>
+                            <td>90</td>
+                            <td>Verwahrungsfrist in Tagen</td>
+                        </tr>
+                        <tr>
+                            <td><code>wids_aggregation</code></td>
+                            <td>str</td>
+                            <td>Position mit höchstem Zollwert</td>
+                            <td>WIDS-Aggregationsmodus</td>
+                        </tr>
+                        <tr>
+                            <td><code>eza_auto_reduce</code></td>
+                            <td>bool</td>
+                            <td>True</td>
+                            <td>EZA auf 13 Spalten reduzieren</td>
+                        </tr>
+                        <tr>
+                            <td><code>ncar_enabled</code></td>
+                            <td>bool</td>
+                            <td>True</td>
+                            <td>NCAR-Enhancement aktiv</td>
+                        </tr>
+                        <tr>
+                            <td><code>atb_filtered_count</code></td>
+                            <td>int</td>
+                            <td>0</td>
+                            <td>Anzahl gefilterter ATB-Zeilen</td>
+                        </tr>
+                        <tr>
+                            <td><code>authenticated</code></td>
+                            <td>bool</td>
+                            <td>False</td>
+                            <td>Login-Status</td>
+                        </tr>
+                        <tr>
+                            <td><code>mandant</code></td>
+                            <td>str</td>
+                            <td>None</td>
+                            <td>Mandanten-Name</td>
+                        </tr>
+                        <tr>
+                            <td><code>mandant_logo</code></td>
+                            <td>str</td>
+                            <td>None</td>
+                            <td>Pfad zum Logo</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 id="workflow">Workflow</h3>
+                
+                <div class="ascii-box">
+1. Login → check_credentials() → validate_activation_code()
+   ↓
+2. Ersteinrichtung (wenn neu) → show_initial_setup()
+   ↓
+3. Upload Leitdatei → process_leitdatei()
+   ↓
+4. Zeitraum filtern → calculate_statistics()
+   ↓
+5. NCAR Upload (optional) → process_ncar_file()
+   ↓
+6. Import-Dateien → process_import_upload()
+   ↓
+7. Verarbeitung → process_data()
+   ↓
+8. Excel-Export → create_bewegungstabelle(), calculate_daily_summary()
+   ↓
+9. Historie → save_to_history()
+   ↓
+10. Downloads → show_downloads_section()
+                </div>
+                
+                <h3 id="persistenz">Datei-Persistenz</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">Datei</th>
+                            <th style="width: 20%;">Format</th>
+                            <th style="width: 50%;">Inhalt</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>config.json</code></td>
+                            <td>JSON</td>
+                            <td>Mandanten-Zugangsdaten: Aktivierungscode, Kunde, Logo, User, Pass</td>
+                        </tr>
+                        <tr>
+                            <td><code>settings_[mandant].json</code></td>
+                            <td>JSON</td>
+                            <td>Konfiguration: Zeitraum, Bürgschaft, Pauschale, Ersatz-Zollsatz</td>
+                        </tr>
+                        <tr>
+                            <td><code>historie_[mandant].json</code></td>
+                            <td>JSON</td>
+                            <td>Letzte 30 Verarbeitungen mit Excel-Daten (Base64)</td>
+                        </tr>
+                        <tr>
+                            <td><code>Zoll_Dokumentation_Template.docx</code></td>
+                            <td>DOCX</td>
+                            <td>Word-Template mit Platzhaltern</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4>Mandanten-Isolation</h4>
+                <ul>
+                    <li>Jeder Mandant hat eigene Settings- und Historie-Datei</li>
+                    <li>Dateinamen: Mandant wird lowercase mit Underscore</li>
+                    <li>Beispiel: "Demo Kunde" → <code>demo_kunde</code></li>
+                    <li>Session State wird bei Logout geleert (außer Auth-Daten)</li>
+                </ul>
+            </section>
+            
+            <section id="dateiformate">
+                <h2>2. Dateiformate & Schnittstellen</h2>
+                
+                <h3 id="leitdatei">Leitdatei (SumA) - 10 Spalten</h3>
+                
+                <table class="table-warning">
+                    <thead>
+                        <tr>
+                            <th style="width: 35%;">Spaltenname</th>
+                            <th style="width: 10%;" class="center">Pflicht</th>
+                            <th style="width: 15%;">Format</th>
+                            <th style="width: 20%;">Validierung</th>
+                            <th style="width: 20%;">Verwendung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="table-icon">📅</span>Datum Überlassung - CUSTST</td>
+                            <td class="status-ok">✓</td>
+                            <td><code>DD.MM.YYYY</code></td>
+                            <td>01.01.2020 - 31.12.2030</td>
+                            <td>Zeitfilter (Gestellung)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="table-icon">🔢</span>Registriernummer/MRN SumA</td>
+                            <td class="status-ok">✓</td>
+                            <td><code>^[0-9]{2}[A-Z]{2}[A-Z0-9]{13}$</code></td>
+                            <td>ATB-Nummer Format</td>
+                            <td>ATB-Nummer</td>
+                        </tr>
+                        <tr>
+                            <td><span class="table-icon">📋</span>Bezugsnummer/LRN SumA</td>
+                            <td class="status-ok">✓</td>
+                            <td>Alphanumerisch</td>
+                            <td>Max. 255 Zeichen</td>
+                            <td>→ Referenznummer</td>
+                        </tr>
+                        <tr>
+                            <td><span class="table-icon">🏷️</span>Anmeldeart Folgeverfahren</td>
+                            <td class="status-ok">✓</td>
+                            <td>4 Buchstaben</td>
+                            <td>IMDC, WIDS, IPDC, etc.</td>
+                            <td>Verarbeitungstyp</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td><span class="table-icon">🔑</span>Weitere Registriernummer Folgeverfahren</td>
+                            <td class="status-ok">✓</td>
+                            <td>MRN</td>
+                            <td>ATB-Filter wenn beginnt mit "ATB"</td>
+                            <td><strong>PRIMARY Match-Key</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="table-icon">🔄</span>Registriernummer Folgeverfahren</td>
+                            <td class="status-ok">✓</td>
+                            <td>MRN</td>
+                            <td>-</td>
+                            <td>FALLBACK Match-Key</td>
+                        </tr>
+                        <tr>
+                            <td><span class="table-icon">📆</span>Datum Ende - CUSFIN</td>
+                            <td class="status-ok">✓</td>
+                            <td><code>DD.MM.YYYY</code></td>
+                            <td>Nach Gestellung</td>
+                            <td>Import-Zeitraum!</td>
+                        </tr>
+                        <tr>
+                            <td><span class="table-icon">🔢</span>Position SumA</td>
+                            <td class="center">○</td>
+                            <td>Numerisch</td>
+                            <td>Varianten erkannt</td>
+                            <td>SUMA-Position</td>
+                        </tr>
+                        <tr>
+                            <td><span class="table-icon">💰</span>Zollwert Folgeverfahren</td>
+                            <td class="center" style="color: #ef4444;">○*</td>
+                            <td>Dezimal</td>
+                            <td>Nur für IPDC</td>
+                            <td>IPDC-Zollwert</td>
+                        </tr>
+                        <tr>
+                            <td><span class="table-icon">💶</span>Zollbetrag Folgeverfahren</td>
+                            <td class="center" style="color: #ef4444;">○*</td>
+                            <td>Dezimal</td>
+                            <td>Nur für IPDC</td>
+                            <td>IPDC-Zölle</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="info-box">
+                    <strong>Position SumA Varianten:</strong> System sucht automatisch nach: "Position SumA", "Pos. SumA", 
+                    "PositionNo SumA", "Position", "Pos", "PositionNo"
+                </div>
+                
+                <h3 id="import-eza">Import EZA - 13 Standard + 2 generiert + Menge</h3>
+                
+                <div class="warning-box">
+                    <strong>Auto-Reduktion:</strong> Wenn > 13 Spalten → automatisch auf Standard reduzieren<br>
+                    <strong>Duplikate-Entfernung:</strong> Über Spalte 5+6 (MRN+Position), behält ERSTE
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 8%;" class="center">#</th>
+                            <th style="width: 30%;">Spaltenname</th>
+                            <th style="width: 12%;" class="center">Pflicht</th>
+                            <th style="width: 50%;">Besonderheiten</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="center">1</td>
+                            <td>Teilnehmer</td>
+                            <td class="center">○</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td class="center">2</td>
+                            <td>Verfahren</td>
+                            <td class="center">○</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td class="center">3</td>
+                            <td>Bezugsnummer/LRN</td>
+                            <td class="center">○</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td class="center">4</td>
+                            <td>Überlassungsdatum</td>
+                            <td class="center">○</td>
+                            <td>-</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td class="center">5</td>
+                            <td><strong>Registriernummer/MRN</strong></td>
+                            <td class="status-ok">✓</td>
+                            <td>Auch "Registriernummer / MRN" mit Leerzeichen</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td class="center">6</td>
+                            <td><strong>PositionNo</strong></td>
+                            <td class="status-ok">✓</td>
+                            <td>Für Position-Match und Duplikate-Check</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td class="center">7</td>
+                            <td><strong>Zollwert</strong></td>
+                            <td class="status-ok">✓</td>
+                            <td>Muss >= 0 sein</td>
+                        </tr>
+                        <tr>
+                            <td class="center">8</td>
+                            <td>AbgabeZoll</td>
+                            <td class="center">○</td>
+                            <td>-</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td class="center">9</td>
+                            <td><strong>AbgabeZollsatz</strong></td>
+                            <td class="status-ok">✓</td>
+                            <td>0-100%, Ersatz wenn 0%</td>
+                        </tr>
+                        <tr>
+                            <td class="center">10</td>
+                            <td>Eustwert</td>
+                            <td class="center">○</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td class="center">11</td>
+                            <td>AbgabeEust</td>
+                            <td class="center">○</td>
+                            <td>-</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td class="center">12</td>
+                            <td><strong>Warentarifnummer</strong></td>
+                            <td class="status-ok">✓</td>
+                            <td>11-STELLIG (nicht 8!)</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td class="center">13</td>
+                            <td><strong>BEAnteil SumA</strong></td>
+                            <td class="center">○</td>
+                            <td>Format: "ATB123 - POS 1, ATB456 - POS 2"</td>
+                        </tr>
+                        <tr style="background: #e0f2fe;">
+                            <td class="center">14</td>
+                            <td><strong>ATBnummer</strong></td>
+                            <td class="center">Gen.</td>
+                            <td>Generiert aus BE-Anteil beim Splitting</td>
+                        </tr>
+                        <tr style="background: #e0f2fe;">
+                            <td class="center">15</td>
+                            <td><strong>Position</strong></td>
+                            <td class="center">Gen.</td>
+                            <td>Generiert aus BE-Anteil beim Splitting</td>
+                        </tr>
+                        <tr>
+                            <td class="center">+</td>
+                            <td><strong>Menge</strong></td>
+                            <td class="center">○</td>
+                            <td>Wird verwendet für Output!</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 id="import-zl">Import ZL/VAV - Schreibweisen-tolerant</h3>
+                
+                <table class="table-modern">
+                    <thead>
+                        <tr>
+                            <th style="width: 35%;">Spalte</th>
+                            <th style="width: 35%;">Auch erkannt als</th>
+                            <th style="width: 30%;">Verwendung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Registriernummer/MRN</strong></td>
+                            <td style="background: #fef2f2;"><code>Registrienummer/MRN</code></td>
+                            <td>MRN-Matching</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PositionNo</strong></td>
+                            <td>-</td>
+                            <td>Position-Anzeige</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Warentarifnummer</strong></td>
+                            <td>-</td>
+                            <td>11-stellige Codenummer</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Voraussichtliche Zollabgabe</strong></td>
+                            <td style="background: #fef2f2;"><code>Vorraussichtliche Zollabgabe</code></td>
+                            <td>Bereits berechnete Zölle</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Voraussichtliche Zollsatzabgabe</strong></td>
+                            <td style="background: #fef2f2;"><code>Vorraussichtliche Zollsatzabgabe</code></td>
+                            <td>Zollsatz in %</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DV1UmgerechnerterRechnungsbetrag</strong></td>
+                            <td style="background: #f0fdf4;"><code>DV1 Umgerechneter Rechnungsbetrag</code></td>
+                            <td>Warenwert wenn Zollsatz=0</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 id="ncts">NCTS - JSON-Parsing</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">Spalte</th>
+                            <th style="width: 15%;" class="center">Pflicht</th>
+                            <th style="width: 65%;">Format & Parsing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>MRN</strong></td>
+                            <td class="status-ok">✓</td>
+                            <td>Standard MRN für Matching</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sicherheit</strong></td>
+                            <td class="status-ok">✓</td>
+                            <td>
+                                JSON: <code>{"Sicherheitsleistungen": "Art: 1 GRN: DE12345 Sicherheit: 50000.00"}</code><br>
+                                Parsing: <code>re.search(r'Sicherheit:\s*([\d.,]+)', ...)</code><br>
+                                Extrahiert: <strong>50000.00</strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 id="ncar">NCAR - Enhancement-Datei</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">Spalte</th>
+                            <th style="width: 15%;" class="center">Pflicht</th>
+                            <th style="width: 55%;">Zweck</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Registriernr.-SumA</strong></td>
+                            <td class="status-ok">✓</td>
+                            <td>ATB-Nummer für Matching (= ATB-Nummer in Ergebnis)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>RegistriernNr./MRN</strong></td>
+                            <td class="status-ok">✓</td>
+                            <td>Transport-MRN → ersetzt "MRN-Nummer Eingang" im Output</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Anzahl Packstücke</strong></td>
+                            <td class="status-ok">✓</td>
+                            <td>Packstückzahl → ersetzt "Menge" im Output</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 id="excel-output">Excel-Output - 3 Sheets</h3>
+                
+                <h4>Sheet 1: "Ergebnis" - 18 Spalten + Tagessaldo</h4>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 8%;" class="center">#</th>
+                            <th style="width: 25%;">Spalte</th>
+                            <th style="width: 25%;">Quelle</th>
+                            <th style="width: 42%;">Besonderheiten</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="center">1</td>
+                            <td>Referenznummer</td>
+                            <td>Bezugsnummer/LRN SumA</td>
+                            <td>Interne Referenz</td>
+                        </tr>
+                        <tr>
+                            <td class="center">2</td>
+                            <td>MRN-Nummer Eingang</td>
+                            <td>NCAR oder ATB</td>
+                            <td>Transport-MRN wenn NCAR vorhanden</td>
+                        </tr>
+                        <tr>
+                            <td class="center">3</td>
+                            <td>ATB-Nummer</td>
+                            <td>Registriernummer/MRN SumA</td>
+                            <td>Immer Original-ATB</td>
+                        </tr>
+                        <tr>
+                            <td class="center">4</td>
+                            <td>SUMA-Position</td>
+                            <td>Position SumA</td>
+                            <td>Wenn vorhanden</td>
+                        </tr>
+                        <tr>
+                            <td class="center">5</td>
+                            <td>Gestellungsdatum</td>
+                            <td>Datum Überlassung</td>
+                            <td>Eingang ins Lager</td>
+                        </tr>
+                        <tr>
+                            <td class="center">6</td>
+                            <td>Beendigung der Verwahrung</td>
+                            <td>Datum Ende - CUSFIN</td>
+                            <td>Ausgang aus Lager</td>
+                        </tr>
+                        <tr>
+                            <td class="center">7</td>
+                            <td>Verwahrungsfrist</td>
+                            <td>Berechnet</td>
+                            <td>Gestellung + 90 Tage</td>
+                        </tr>
+                        <tr>
+                            <td class="center">8</td>
+                            <td>Verwahrungsdauer</td>
+                            <td>Berechnet</td>
+                            <td>Beendigung - Gestellung + 1</td>
+                        </tr>
+                        <tr>
+                            <td class="center">9</td>
+                            <td>Erledigung mit</td>
+                            <td>Verwendeter Match-Key</td>
+                            <td>MRN aus Import</td>
+                        </tr>
+                        <tr>
+                            <td class="center">10</td>
+                            <td>Pos</td>
+                            <td>Import oder Status</td>
+                            <td>"KEIN MATCH", "3 (max von 5)", "Pauschale"</td>
+                        </tr>
+                        <tr>
+                            <td class="center">11</td>
+                            <td>Codenummer</td>
+                            <td>Warentarifnummer</td>
+                            <td>11-stellig aus Import</td>
+                        </tr>
+                        <tr>
+                            <td class="center">12</td>
+                            <td>Menge</td>
+                            <td>Import/NCAR</td>
+                            <td>Packstücke wenn NCAR</td>
+                        </tr>
+                        <tr>
+                            <td class="center">13</td>
+                            <td>Zollwert (total)</td>
+                            <td>Import/Berechnet</td>
+                            <td>Warenwert</td>
+                        </tr>
+                        <tr>
+                            <td class="center">14</td>
+                            <td>Drittlandzollsatz</td>
+                            <td>Import/Berechnet</td>
+                            <td>%, Ersatz wenn 0</td>
+                        </tr>
+                        <tr>
+                            <td class="center">15</td>
+                            <td>Zölle (total)</td>
+                            <td>Berechnet</td>
+                            <td>= Gesamtabgaben IMMER</td>
+                        </tr>
+                        <tr>
+                            <td class="center">16</td>
+                            <td>EUSt</td>
+                            <td>Berechnet</td>
+                            <td>(Zollwert + Zölle) × 19%</td>
+                        </tr>
+                        <tr>
+                            <td class="center">17</td>
+                            <td>Gesamtabgaben</td>
+                            <td>Berechnet</td>
+                            <td>Bürgschaftsrelevant</td>
+                        </tr>
+                        <tr>
+                            <td class="center">18</td>
+                            <td>Anmeldeart</td>
+                            <td>Leitdatei</td>
+                            <td>IMDC, WIDS, etc.</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td class="center">+</td>
+                            <td colspan="3">
+                                <strong>TAGESSALDO-Zeilen:</strong> In letzter Zeile des Tages<br>
+                                Spalte 1: "TAGESSALDO DD.MM.YYYY" oder "TAGESSALDO DD.MM.YYYY (Bürgschaft +1.5 Mio)"<br>
+                                Spalten: "", Belastung, Entlastung, Netto-Belastung, Bürgschaftsstand
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4>Sheet 2: "Bewegungsdetails"</h4>
+                <ul>
+                    <li><strong>START-Zeile:</strong> Bürgschafts-Anfangsstand</li>
+                    <li><strong>Bewegungen:</strong> Ein-/Ausgänge chronologisch</li>
+                    <li><strong>TAGESSUMME:</strong> Nach jedem Tag</li>
+                    <li><strong>BÜRGSCHAFTSERHÖHUNG:</strong> Wenn konfiguriert</li>
+                    <li><strong>Sortierung:</strong> Datum → Bewegungsart (Eingang vor Ausgang) → ATB → SUMA-Position</li>
+                </ul>
+                
+                <h4>Sheet 3: "Tageszusammenfassung"</h4>
+                <ul>
+                    <li><strong>START-Zeile:</strong> Anfangswerte</li>
+                    <li><strong>Pro Tag:</strong> Belastung, Entlastung, Netto, Tiefst-/Höchststand, Auslastung %</li>
+                    <li><strong>GESAMT-Zeile:</strong> Summen und globale Extremwerte</li>
+                    <li><strong>Hinweis-Spalte:</strong> Bei Bürgschaftserhöhung</li>
+                </ul>
+                
+                <h3 id="word-platzhalter">Word-Platzhalter (über 40 Stück)</h3>
+                
+                <h4>Basis-Platzhalter</h4>
+                <table class="compact">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Platzhalter</th>
+                            <th style="width: 60%;">Wert</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>{{DATEINAME}}</code></td>
+                            <td>Verwahrliste_[MANDANT]_[VON]#[BIS]</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{MANDANT}}</code></td>
+                            <td>Mandanten-Name</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{HAUPTZOLLAMT}}</code></td>
+                            <td>Immer "Krefeld"</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{VON_DATUM}}</code></td>
+                            <td>DD.MM.YYYY</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{BIS_DATUM}}</code></td>
+                            <td>DD.MM.YYYY</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{STARTBUERGSCHAFT}}</code></td>
+                            <td>Formatiert mit Punkt als Tausender</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4>Count-Platzhalter</h4>
+                <div class="info-box">
+                    <strong>Anmeldearten:</strong> {{IMDC_COUNT}}, {{WIDS_COUNT}}, {{IPDC_COUNT}}, {{NCDP_COUNT}}, 
+                    {{LEER_COUNT}}, {{APDC_COUNT}}, {{AVDC_COUNT}}, {{NCAR_COUNT}}<br>
+                    <strong>S-Arten:</strong> {{SUSP_COUNT}}, {{SUDC_COUNT}}, {{SUCO_COUNT}}, {{SUCF_COUNT}}, 
+                    {{S_ARTEN_SUMME}}, {{S_ARTEN_DETAILS}}<br>
+                    <strong>Import:</strong> {{IMPORT_EZA_COUNT}}, {{IMPORT_ZL_COUNT}}, {{NCTS_COUNT}}, {{NCAR_COUNT}}
+                </div>
+                
+                <h4>Finanz-Platzhalter (für ALLE Anmeldearten)</h4>
+                <div class="warning-box">
+                    Für jede Anmeldeart (IMDC, WIDS, IPDC, NCDP, LEER, APDC, AVDC, NCAR):<br>
+                    {{[ART]_ZOLLWERT}}, {{[ART]_ZOELLE}}, {{[ART]_EUST}}, {{[ART]_ABGABEN}}<br>
+                    Beispiel: {{IMDC_ZOLLWERT}}, {{IMDC_ZOELLE}}, {{IMDC_EUST}}, {{IMDC_ABGABEN}}
+                </div>
+                
+                <h4>Weitere Platzhalter</h4>
+                <ul>
+                    <li><strong>Gesamt:</strong> {{GESAMT_ZOLLWERT}}, {{GESAMT_ZOELLE}}, {{GESAMT_EUST}}, {{GESAMT_ABGABEN}}</li>
+                    <li><strong>Config:</strong> {{PAUSCHALBETRAG}}, {{ERSATZ_ZOLLSATZ}}, {{EUST_SATZ}}, {{VERWAHRUNGSFRIST}}</li>
+                    <li><strong>Erhöhung:</strong> {{BUERGSCHAFT_ERHOEHUNG}} (Text oder leer)</li>
+                    <li><strong>Ergebnis:</strong> {{MAX_AUSLASTUNG}}, {{TIEFSTSTAND}}, {{LEITDATEI_GESAMT}}, {{ERGEBNIS_ZEILEN}}</li>
+                </ul>
+                
+                <h4>Dateinamen-Konvention</h4>
+                <div class="info-box">
+                    <strong>Excel:</strong> Verwahrliste_[MANDANT ersten 3]_[VON MM_YY]#[BIS MM_YY].xlsx<br>
+                    <strong>Word:</strong> Zoll_Dokumentation_[MANDANT ersten 3]_[VON MM_YY]#[BIS MM_YY].docx<br>
+                    <strong>Historie:</strong> _Historie wird angehängt
+                </div>
+            </section>
+            
+            <section id="matching">
+                <h2>3. Matching-Algorithmen</h2>
+                
+                <h3 id="anmeldearten-overview">Anmeldearten-Übersicht</h3>
+                
+                <h4>A) VERARBEITBARE ANMELDEARTEN</h4>
+                
+                <table class="table-success">
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;">Code</th>
+                            <th style="width: 25%;">Bedeutung</th>
+                            <th style="width: 20%;">Import-Datei</th>
+                            <th style="width: 25%;">Matching</th>
+                            <th style="width: 20%;">Berechnung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>IMDC</strong></td>
+                            <td>Import Declaration<br><small>Normale Einfuhr</small></td>
+                            <td>Import EZA</td>
+                            <td>3-Kriterien oder MRN</td>
+                            <td>Zollwert × Zollsatz÷100</td>
+                        </tr>
+                        <tr>
+                            <td><strong>WIDS</strong></td>
+                            <td>Warehouse Import<br><small>Direkteinlagerung</small></td>
+                            <td>Import ZL/VAV</td>
+                            <td>MRN-Match</td>
+                            <td>Voraussichtliche Abgabe</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IPDC</strong></td>
+                            <td>Import Processing<br><small>Aktive Veredelung</small></td>
+                            <td style="background: #f0fdf4;">KEINE!</td>
+                            <td>-</td>
+                            <td>Aus Leitdatei</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NCDP</strong></td>
+                            <td>Transit Previous<br><small>Versandverfahren</small></td>
+                            <td>NCTS</td>
+                            <td>MRN aus "Reg. Folge"</td>
+                            <td>Sicherheitsbetrag</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4>B) PAUSCHALE ANMELDEARTEN (alle 10.000€)</h4>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Code</th>
+                            <th style="width: 35%;">Bedeutung</th>
+                            <th style="width: 50%;">Besonderheit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>(leer)</strong></td>
+                            <td>Leere Anmeldeart</td>
+                            <td>Pos = SUMA-Position oder "Pauschale"</td>
+                        </tr>
+                        <tr>
+                            <td><strong>APDC</strong></td>
+                            <td>-</td>
+                            <td>Wie (leer)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AVDC</strong></td>
+                            <td>-</td>
+                            <td>Wie (leer)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NCAR</strong></td>
+                            <td>Arrival Notification</td>
+                            <td>NICHT verwechseln mit NCAR-Enhancement!</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4>C) S-ANMELDEARTEN (werden übersprungen)</h4>
+                
+                <div class="warning-box">
+                    <strong>Interne Konsolidierungen ohne Bürgschaftsrelevanz:</strong><br>
+                    • SUSP - Suspension<br>
+                    • SUDC - Suspension Declaration<br>
+                    • SUCO - Suspension Consolidation<br>
+                    • SUCF - Suspension Confirmation<br>
+                    → Werden gezählt, erscheinen mit ⚫ Symbol, aber NICHT verarbeitet!
+                </div>
+                
+                <h3 id="imdc-matching">IMDC - 3-Kriterien-Matching</h3>
+                
+                <div class="diagram-box">
+                    <div class="diagram-title">IMDC Matching-Prozess</div>
+                    <div class="ascii-box">
+1. Prüfe BE-Anteil vorhanden?
+   ├─ JA: 3-Kriterien-Match
+   │   ├─ MRN aus "Weitere Registriernummer"
+   │   ├─ ATB aus BE-Anteil (Spalte 14)
+   │   └─ Position aus BE-Anteil (Spalte 15)
+   │
+   │   Beispiel: 24DEABC123 + 24DEATB456 + "1"
+   │
+   │   ├─ MATCH: "präziser Match" → Protokoll: "280 präzise"
+   │   └─ KEIN MATCH: Fallback auf Alternative MRN
+   │
+   └─ NEIN: Direkt Fallback
+
+2. Fallback: Nur MRN-Match
+   ├─ Suche in "Weitere Registriernummer"
+   └─ Nicht gefunden: Suche in "Registriernummer Folgeverfahren"
+   
+   ├─ MATCH: "Fallback Match" → Protokoll: "40 Fallback"
+   └─ KEIN MATCH: Pauschalbetrag 10.000€
+                    </div>
+                </div>
+                
+                <h3 id="wids-matching">WIDS - Aggregations-Modi</h3>
+                
+                <div class="diagram-box">
+                    <div class="diagram-title">WIDS bei mehreren Positionen</div>
+                    <div class="flow-diagram">
+                        <div class="flow-box">WIDS mit MRN-Match</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">Mehrere Positionen gefunden?</div>
+                        <div class="flow-arrow">↓</div>
+                        <strong>3 Aggregations-Modi:</strong><br><br>
+                        
+                        <div class="flow-box" style="background: #d4edda;">1. Position mit höchstem Zollwert (Standard)</div>
+                        → Anzeige: "Pos 3 (max von 5)"<br><br>
+                        
+                        <div class="flow-box">2. Nur Position 1</div>
+                        → Anzeige: "Pos 1 (1 von 5)"<br><br>
+                        
+                        <div class="flow-box">3. Summe aller Positionen</div>
+                        → Anzeige: "SUMME (5 Pos.)"
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>Zollwert-Rückrechnung bei WIDS:</strong><br>
+                    • Wenn Zollsatz = 0%: Zollwert = DV1-Betrag<br>
+                    • Sonst: Zollwert = Voraussichtliche Abgabe ÷ (Zollsatz ÷ 100)
+                </div>
+                
+                <h3 id="ipdc-matching">IPDC - Keine Import-Datei</h3>
+                
+                <div class="success-box">
+                    <strong>IPDC-Besonderheit:</strong> Alle Daten kommen aus der Leitdatei!<br>
+                    • Zollwert aus "Zollwert Folgeverfahren"<br>
+                    • Zölle aus "Zollbetrag Folgeverfahren"<br>
+                    • Zollsatz berechnet: Zollbetrag ÷ Zollwert × 100<br>
+                    • Statistik zeigt: "100 mit Zollwert, 23 ohne"
+                </div>
+                
+                <h3 id="ncdp-matching">NCDP - Transit-Matching</h3>
+                
+                <div class="warning-box">
+                    <strong>NCDP verwendet ANDERE MRN-Spalte:</strong><br>
+                    • Matching über "Registriernummer Folgeverfahren" (NICHT "Weitere"!)<br>
+                    • Fallback auf "Weitere Registriernummer"<br>
+                    • Sicherheitsbetrag aus JSON extrahieren<br>
+                    • Menge = 0 (immer)
+                </div>
+                
+                <h3 id="pauschale-arten">Pauschale Anmeldearten</h3>
+                
+                <div class="info-box">
+                    <strong>Einheitliche Verarbeitung für (leer), APDC, AVDC, NCAR:</strong><br>
+                    • Keine Import-Datei nötig<br>
+                    • Alle Werte = 0, außer Gesamtabgaben = Pauschalbetrag (10.000€)<br>
+                    • Pos = SUMA-Position oder "Pauschale"<br>
+                    • Menge = 0
+                </div>
+            </section>
+            
+            <section id="berechnungen">
+                <h2>4. Berechnungslogik</h2>
+                
+                <h3 id="zoll-berechnungen">Zollberechnungen</h3>
+                
+                <h4>Standard-Berechnung (IMDC)</h4>
+                <div class="formula-box">
+                    Zölle = Zollwert × (Drittlandzollsatz ÷ 100)
+                </div>
+                
+                <h4>Ersatz bei 0% Zollsatz</h4>
+                <div class="formula-box">
+                    WENN Zollsatz = 0% UND Zollwert > 0:<br>
+                    Drittlandzollsatz = 12% (konfigurierbar)<br>
+                    Zölle = Zollwert × 0.12
+                </div>
+                
+                <h4>EUSt-Berechnung</h4>
+                <div class="formula-box">
+                    EUSt = (Zollwert + Zölle) × 19%
+                </div>
+                
+                <h3 id="geschaeftsregeln">Geschäftsregeln</h3>
+                
+                <table class="table-warning">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">Regel</th>
+                            <th style="width: 30%;">Bedingung</th>
+                            <th style="width: 40%;">Aktion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Mindestabgaben</strong></td>
+                            <td>Gesamtabgaben 0,01€ - 0,99€</td>
+                            <td>Anhebung auf 1€</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Null-Euro mit Wert</strong></td>
+                            <td>Gesamtabgaben = 0€<br>UND Zollwert > 0</td>
+                            <td>Gesamtabgaben = 1€</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Null-Euro ohne Wert</strong></td>
+                            <td>Gesamtabgaben = 0€<br>UND Zollwert = 0</td>
+                            <td>Gesamtabgaben = Pauschale (10.000€)</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td><strong>Zölle-Regel</strong></td>
+                            <td>IMMER</td>
+                            <td>Zölle = Gesamtabgaben</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 id="wids-zollwert">WIDS-Zollwert-Rückrechnung</h3>
+                
+                <div class="ascii-box">
+Funktion: calculate_wids_zollwert()
+
+WENN Voraussichtliche Zollsatzabgabe = 0%:
+    Zollwert = DV1UmgerechnerterRechnungsbetrag
+SONST:
+    Zollwert = Voraussichtliche Zollabgabe ÷ (Zollsatzabgabe ÷ 100)
+
+Beispiel:
+- Zollabgabe: 1.200€
+- Zollsatz: 12%
+- Zollwert = 1.200 ÷ 0.12 = 10.000€
+                </div>
+                
+                <h3 id="konstanten">Konstanten & Defaults</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">Parameter</th>
+                            <th style="width: 20%;">Wert</th>
+                            <th style="width: 50%;">Verwendung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>EUSt-Satz</strong></td>
+                            <td>19%</td>
+                            <td>Fest codiert, nicht konfigurierbar</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Verwahrungsfrist</strong></td>
+                            <td>90 Tage</td>
+                            <td>Fest codiert, Gestellung + 90</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pauschalbetrag</strong></td>
+                            <td>10.000€</td>
+                            <td>Konfigurierbar, Standard</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ersatz-Zollsatz</strong></td>
+                            <td>12%</td>
+                            <td>Konfigurierbar, für 0%-Waren</td>
+                        </tr>
+                        <tr>
+                            <td><strong>WIDS-Aggregation</strong></td>
+                            <td>Position mit höchstem Zollwert</td>
+                            <td>Standard-Modus</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <section id="validierungen">
+                <h2>5. Validierungen & Fehlerbehandlung</h2>
+                
+                <h3 id="import-aktivierung">Import-Aktivierung</h3>
+                
+                <div class="info-box">
+                    <strong>Regel:</strong> Import-Upload wird NUR aktiviert wenn Anmeldeart-Count > 0<br>
+                    <strong>Anzeige wenn Count = 0:</strong> "Nicht benötigt" statt Upload-Button
+                </div>
+                
+                <h3 id="fehlermeldungen">Fehlermeldungen</h3>
+                
+                <table class="table-warning">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Fehlermeldung</th>
+                            <th style="width: 30%;">Ursache</th>
+                            <th style="width: 30%;">Lösung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>❌ Kritischer Fehler: Eine der folgenden Pflichtspalten wurde nicht gefunden</td>
+                            <td>Spalte fehlt oder falsch benannt</td>
+                            <td>Spaltennamen prüfen, Groß-/Kleinschreibung!</td>
+                        </tr>
+                        <tr>
+                            <td>⚠️ Keine Daten im gewählten Zeitraum gefunden!</td>
+                            <td>Falsches Datumsformat oder leerer Zeitraum</td>
+                            <td>DD.MM.YYYY Format, Zeitraum erweitern</td>
+                        </tr>
+                        <tr>
+                            <td>❌ Fehlende Dateien: Import EZA</td>
+                            <td>IMDC vorhanden aber keine EZA</td>
+                            <td>EZA für Zeitraum exportieren</td>
+                        </tr>
+                        <tr>
+                            <td>⚠️ Spalte 'BEAnteil SumA' nicht gefunden</td>
+                            <td>EZA hat < 13 Spalten</td>
+                            <td>Fortsetzung ohne BE-Anteil</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 id="mrn-bereinigung">MRN-Bereinigung</h3>
+                
+                <div class="ascii-box">
+Funktion: clean_mrn()
+
+1. Entfernt führende/nachfolgende Leerzeichen
+2. Entfernt ".XX" Endungen (z.B. ".01", ".02")
+3. Beispiel: "24DEABC123.01" → "24DEABC123"
+
+Anwendung auf:
+- Leitdatei: Weitere Registriernummer, Registriernummer
+- Import EZA: Registriernummer/MRN
+- Import ZL: Registriernummer/MRN
+- NCTS: MRN
+                </div>
+                
+                <h3 id="filter-regeln">Filter-Regeln</h3>
+                
+                <h4>ATB-Filter</h4>
+                <div class="warning-box">
+                    <strong>Regel:</strong> Wenn "Weitere Registriernummer Folgeverfahren" beginnt mit "ATB"<br>
+                    → Zeile überspringen + Zähler erhöhen<br>
+                    <strong>Info-Box:</strong> "15 Zeilen mit ATB wurden übersprungen"
+                </div>
+                
+                <h4>S-Anmeldearten-Filter</h4>
+                <div class="info-box">
+                    <strong>Regel:</strong> SUSP, SUDC, SUCO, SUCF werden NICHT verarbeitet<br>
+                    → Interne Konsolidierungen ohne Bürgschaftsrelevanz<br>
+                    <strong>Info-Box:</strong> "45 S-Anmeldearten wurden gefunden, aber nicht verarbeitet"
+                </div>
+                
+                <h4>Datum-Validierung</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">Feld</th>
+                            <th style="width: 30%;">Format</th>
+                            <th style="width: 40%;">Validierung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Datum Überlassung</td>
+                            <td>DD.MM.YYYY</td>
+                            <td>01.01.2020 - 31.12.2030</td>
+                        </tr>
+                        <tr>
+                            <td>Datum Ende</td>
+                            <td>DD.MM.YYYY</td>
+                            <td>Nach Gestellungsdatum</td>
+                        </tr>
+                        <tr>
+                            <td>MRN</td>
+                            <td>YYCCTTTNNNNNNNNNN</td>
+                            <td>Regex: ^[0-9]{2}[A-Z]{2}[A-Z0-9]{13}$</td>
+                        </tr>
+                        <tr>
+                            <td>Warentarifnummer</td>
+                            <td>11-stellig</td>
+                            <td>NICHT 8-stellig!</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <section id="geschaeftsregeln-detail">
+                <h2>6. Geschäftsregeln & Entscheidungstabellen</h2>
+                
+                <h3 id="statistik-anzeige">Statistik-Anzeige nach Zeitfilter</h3>
+                
+                <div class="info-box">
+                    <strong>Tabelle zeigt alle Anmeldearten mit:</strong><br>
+                    • ✅ = wird verarbeitet (normale Anmeldearten)<br>
+                    • ⚫ = S-Anmeldearten (intern, werden übersprungen)
+                </div>
+                
+                <h3 id="info-boxen">Info-Box-Regeln</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">Bedingung</th>
+                            <th style="width: 80%;">Info-Box Text</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>IMDC > 0</td>
+                            <td>📋 Für 345 IMDC-Zeilen wird eine Importdatei EZA benötigt <strong>(03/2024 - 10/2024)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>WIDS > 0</td>
+                            <td>📋 Für 234 WIDS-Zeilen wird eine Importdatei ZL benötigt <strong>(04/2024 - 09/2024)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>NCDP > 0</td>
+                            <td>📋 Für 45 NCDP-Zeilen wird eine NCTS-Datei benötigt</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="warning-box">
+                    <strong>Wichtig:</strong> Zeitraum basiert auf ERLEDIGUNGSDATUM (Datum Ende - CUSFIN), NICHT auf Gestellungsdatum!
+                </div>
+                
+                <h3 id="sortierung">Sortierung</h3>
+                
+                <h4>Standard-Sortierung (Ergebnis)</h4>
+                <div class="ascii-box">
+1. Gestellungsdatum (aufsteigend)
+2. ATB-Nummer (aufsteigend)
+3. SUMA-Position (numerisch, aufsteigend)
+
+Funktion: prepare_dataframe_for_sorting()
+- Konvertiert Datum zu Date-Objekt
+- Konvertiert SUMA-Position zu numerisch (999999 wenn leer)
+                </div>
+                
+                <h4>Bewegungsdetails-Sortierung</h4>
+                <div class="ascii-box">
+1. Datum (aufsteigend)
+2. Bewegungsart (Eingang VOR Ausgang)
+3. ATB-Nummer (aufsteigend)
+4. SUMA-Position (numerisch)
+                </div>
+                
+                <h4>processing_active Flag</h4>
+                <div class="info-box">
+                    <strong>Zweck:</strong> Verhindert Doppelstart der Verarbeitung<br>
+                    <strong>Gesetzt auf True:</strong> Bei Start von process_data()<br>
+                    <strong>Gesetzt auf False:</strong> Im finally-Block<br>
+                    <strong>UI-Effekt:</strong> Button disabled während Verarbeitung
+                </div>
+            </section>
+            
+            <section id="be-anteil">
+                <h2>7. BE-Anteil & Technische Konzepte</h2>
+                
+                <h3 id="be-format">BE-Anteil Format</h3>
+                
+                <div class="info-box">
+                    <strong>Spalte 13 in EZA:</strong> BEAnteil SumA<br>
+                    <strong>Format:</strong> "ATB123 - POS 1, ATB456 - POS 2"<br>
+                    <strong>Bedeutung:</strong> BE = Besondere Erwähnung (Aktive Veredelung)
+                </div>
+                
+                <h3 id="be-verarbeitung">BE-Verarbeitung</h3>
+                
+                <div class="ascii-box">
+Funktion: process_eza_be_anteil()
+
+1. Prüfe ob Spalte 13 existiert (sonst Warning)
+2. Für jede Zeile:
+   a) BE-Anteil leer → ATBnummer = "", Position = ""
+   b) BE-Anteil vorhanden → Parse Einträge:
+      
+      "ATB123 - POS 1, ATB456 - POS 2"
+      ↓ Split bei Komma
+      ["ATB123 - POS 1", "ATB456 - POS 2"]
+      ↓ Für jeden Eintrag
+      Split bei " - POS "
+      ↓
+      ATBnummer = "ATB123"
+      Position = "1"
+
+3. Erstelle neue Zeile für jeden BE-Anteil
+4. Original-Zeile wird multipliziert
+
+Beispiel:
+- Original: 100 Zeilen
+- 23 mit BE-Anteil (je 2 Einträge)
+- Ergebnis: 100 + 23 = 123 Zeilen
+                </div>
+                
+                <h3 id="be-matching">3-Kriterien-Match durch BE-Anteil</h3>
+                
+                <div class="diagram-box">
+                    <div class="diagram-title">Präzises Matching ermöglicht</div>
+                    <div class="flow-diagram">
+                        <div class="flow-box">Leitdatei</div>
+                        MRN: 24DEABC123<br>
+                        ATB: 24DEATB456<br>
+                        SUMA-Pos: 1<br><br>
+                        
+                        <div class="flow-arrow">↓ Match mit ↓</div><br>
+                        
+                        <div class="flow-box">Import EZA (nach BE-Split)</div>
+                        MRN: 24DEABC123<br>
+                        ATBnummer: 24DEATB456<br>
+                        Position: 1<br><br>
+                        
+                        <div class="flow-arrow">↓</div><br>
+                        
+                        <div class="flow-box" style="background: #d4edda;">PRÄZISER MATCH</div>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>Statistik in Protokoll:</strong><br>
+                    • "BE-Anteil: 123 Zeilen (36.2%) mit BE-Anteil-Info verarbeitet"<br>
+                    • "280 präzise, 40 Fallback" (IMDC-Matches)
+                </div>
+            </section>
+            
+            <section id="buergschaftssaldo">
+                <h2>8. Bürgschaftssaldo-Berechnung</h2>
+                
+                <h3 id="bewegungstabelle">Bewegungstabelle</h3>
+                
+                <div class="ascii-box">
+Funktion: create_bewegungstabelle()
+
+Für jede Zeile im Ergebnis:
+1. Eingang am Gestellungsdatum
+   - Bewegungsart: "Eingang"
+   - Belastung: Gesamtabgaben
+   - Entlastung: 0
+
+2. Ausgang am Beendigungsdatum
+   - Bewegungsart: "Ausgang"
+   - Belastung: 0
+   - Entlastung: Gesamtabgaben
+
+Sortierung:
+- Datum
+- Bewegungsart (Eingang vor Ausgang)
+- Original-Index
+- SUMA-Position
+                </div>
+                
+                <h3 id="tagessaldo">Tagessaldo-Berechnung</h3>
+                
+                <div class="formula-box">
+                    Für jeden Tag:<br>
+                    Belastung = Σ(alle Eingänge)<br>
+                    Entlastung = Σ(alle Ausgänge)<br>
+                    Netto = Entlastung - Belastung<br>
+                    Neuer Stand = Alter Stand - Belastung + Entlastung
+                </div>
+                
+                <h4>Bürgschaftserhöhung</h4>
+                <div class="info-box">
+                    <strong>Wenn konfiguriert:</strong><br>
+                    • Am konfigurierten Datum<br>
+                    • Entlastung += Erhöhungsbetrag<br>
+                    • BÜRGSCHAFTSERHÖHUNG-Zeile in Bewegungsdetails<br>
+                    • Hinweis im Tagessaldo: "(Bürgschaft +1.5 Mio)"
+                </div>
+                
+                <h3 id="auslastung">Auslastungsberechnung</h3>
+                
+                <div class="formula-box">
+                    Globaler Tiefststand = MIN(alle Bürgschaftsstände)<br>
+                    Globaler Höchststand = MAX(alle Bürgschaftsstände)<br><br>
+                    
+                    Max. Auslastung % = (Startbürgschaft - Globaler Tiefststand) ÷ Startbürgschaft × 100
+                </div>
+                
+                <h4>Tageszusammenfassung-Struktur</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Zeile</th>
+                            <th>Inhalt</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>START</td>
+                            <td>Anfangswerte, Auslastung 0%</td>
+                        </tr>
+                        <tr>
+                            <td>Pro Tag</td>
+                            <td>Tages-Belastung, -Entlastung, Netto, Tiefst-/Höchststand, Auslastung %</td>
+                        </tr>
+                        <tr>
+                            <td>Leerzeile</td>
+                            <td>Trennung vor Gesamt</td>
+                        </tr>
+                        <tr>
+                            <td>GESAMT</td>
+                            <td>Summen, globale Extremwerte, Max. Auslastung</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <section id="word-export">
+                <h2>9. Zoll-Dokumentation (Word-Export)</h2>
+                
+                <h3 id="template">Template-System</h3>
+                
+                <div class="info-box">
+                    <strong>Template-Datei:</strong> Zoll_Dokumentation_Template.docx<br>
+                    <strong>Bibliothek:</strong> python-docx<br>
+                    <strong>Platzhalter-Format:</strong> {{PLATZHALTER}}<br>
+                    <strong>Logo-Integration:</strong> {{LOGO}} in Kopfzeile
+                </div>
+                
+                <h3 id="platzhalter-liste">Vollständige Platzhalter-Liste</h3>
+                
+                <div class="ascii-box">
+Funktion: create_personalized_documentation()
+
+1. Lade Template
+2. Erstelle values-Dictionary mit über 40 Platzhaltern
+3. Ersetze in:
+   - Paragraphen
+   - Tabellen
+   - Kopfzeilen
+4. Logo einfügen wenn vorhanden
+5. Speichern als BytesIO
+
+Spezielle Logik:
+- S_ARTEN_DETAILS: Erstellt Liste "SUSP: 12, SUDC: 8, ..."
+- BUERGSCHAFT_ERHOEHUNG: Text oder leer
+- Finanz-Platzhalter: Für ALLE Anmeldearten
+- Format: Punkt als Tausender, Komma als Dezimal
+                </div>
+                
+                <h3 id="logo-integration">Logo-Integration</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">Element</th>
+                            <th style="width: 70%;">Implementation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Platzhalter</td>
+                            <td>{{LOGO}} in Kopfzeile</td>
+                        </tr>
+                        <tr>
+                            <td>Pfad</td>
+                            <td>st.session_state['mandant_logo']</td>
+                        </tr>
+                        <tr>
+                            <td>Größe</td>
+                            <td>width=Inches(1.5)</td>
+                        </tr>
+                        <tr>
+                            <td>Fallback</td>
+                            <td>Platzhalter wird gelöscht wenn kein Logo</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <section id="historie">
+                <h2>10. Historie-System</h2>
+                
+                <h3 id="historie-datei">Dateiformat</h3>
+                
+                <div class="info-box">
+                    <strong>Datei:</strong> historie_[mandant].json<br>
+                    <strong>Max. Einträge:</strong> 30 (FIFO - First In, First Out)<br>
+                    <strong>Excel-Speicherung:</strong> Base64-codiert
+                </div>
+                
+                <h3 id="historie-speicherung">Speicherungs-Struktur</h3>
+                
+                <pre>
+{
+    "timestamp": "2024-11-05T14:32:15.123456",
+    "von_datum": "01.05.2024",
+    "bis_datum": "31.10.2024",
+    "zeilen": 744,
+    "startbuergschaft": 5000000.0,
+    "max_auslastung": "7,0%",
+    "excel_data": "UEsDBBQABgAIAAAA...", // Base64
+    "stats": {
+        "IMDC": 345,
+        "WIDS": 234,
+        "IPDC": 123,
+        "(leer)": 42
+    },
+    "processing_stats": {
+        "processed_imdc": 340,
+        "imdc_match": 320,
+        "imdc_no_match": 20,
+        "imdc_3criteria_match": 280,
+        "imdc_fallback_match": 40
+    },
+    "config": {
+        "pauschalbetrag": 10000,
+        "ersatz_zollsatz": 0.12,
+        "buergschaft_erhöhung_aktiv": true,
+        "buergschaft_erhöhung_datum": "01.10.2024",
+        "buergschaft_erhöhung_betrag": 1500000
+    }
+}
+                </pre>
+                
+                <h3 id="historie-anzeige">Historie-Anzeige</h3>
+                
+                <h4>Liste (links)</h4>
+                <div class="ascii-box">
+Nr. | Datum      | Zeit  | Bürgschaftszeitraum
+-------------------------------------------------
+01  | 05.11.2024 | 14:32 | 05-2024 bis 10-2024
+02  | 01.11.2024 | 09:15 | 05-2024 bis 10-2024
+03  | 28.10.2024 | 16:48 | 04-2024 bis 09-2024
+
+Zusatz-Info:
+📊 744 Zeilen | 💰 5.000.000 € | ⚡ 7,0%
+                </div>
+                
+                <h4>Details (rechts)</h4>
+                <ul>
+                    <li><strong>Basis-Info:</strong> Zeitraum, Zeilen, Bürgschaft, Auslastung</li>
+                    <li><strong>Downloads:</strong> Excel (original), Word (neu generiert)</li>
+                    <li><strong>Erweiterte Details:</strong> Konfiguration, Statistiken, Protokoll</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <strong>Re-Download:</strong> Excel ist Original, Word wird neu mit historischen Daten generiert<br>
+                    <strong>Dateinamen:</strong> Bekommen "_Historie" angehängt
+                </div>
+            </section>
+            
+            <section id="settings">
+                <h2>11. Settings & Mandantenverwaltung</h2>
+                
+                <h3 id="ersteinrichtung">Ersteinrichtung</h3>
+                
+                <div class="ascii-box">
+Funktion: check_initial_setup()
+
+1. Prüfe ob settings_[mandant].json existiert
+2. Wenn nein → show_initial_setup()
+3. Formular mit:
+   - Bewilligungszeitraum (Von/Bis)
+   - Bürgschafts-Startsumme
+   - Ersatz-Zollsatz (Standard: 12%)
+   - Pauschalbetrag (Standard: 10.000€)
+   - Optional: Bürgschaftserhöhung
+4. Speichern als config_name = "2024_2025"
+                </div>
+                
+                <h3 id="konfiguration">Konfigurations-Parameter</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">Parameter</th>
+                            <th style="width: 20%;">Typ</th>
+                            <th style="width: 50%;">Beschreibung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>von / bis</td>
+                            <td>DD.MM.YYYY</td>
+                            <td>Bewilligungszeitraum</td>
+                        </tr>
+                        <tr>
+                            <td>buergschaft</td>
+                            <td>float</td>
+                            <td>Startsumme in Euro</td>
+                        </tr>
+                        <tr>
+                            <td>ersatz_zollsatz</td>
+                            <td>float</td>
+                            <td>% für 0%-Waren (als Dezimal: 12% = 12.0)</td>
+                        </tr>
+                        <tr>
+                            <td>pauschale</td>
+                            <td>float</td>
+                            <td>Pauschalbetrag für KEIN MATCH</td>
+                        </tr>
+                        <tr>
+                            <td>buergschaft_erhoehung_aktiv</td>
+                            <td>bool</td>
+                            <td>Erhöhung aktiviert?</td>
+                        </tr>
+                        <tr>
+                            <td>buergschaft_erhoehung_datum</td>
+                            <td>DD.MM.YYYY</td>
+                            <td>Datum der Erhöhung</td>
+                        </tr>
+                        <tr>
+                            <td>buergschaft_erhoehung_betrag</td>
+                            <td>float</td>
+                            <td>Erhöhungsbetrag in Euro</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 id="erweiterte-info">Erweiterte Informationen (3 Tabs)</h3>
+                
+                <h4>Tab 1: Verarbeitungsregeln</h4>
+                <ul>
+                    <li><strong>EUSt-Satz:</strong> 19% (fest)</li>
+                    <li><strong>Verwahrungsfrist:</strong> 90 Tage (fest)</li>
+                    <li><strong>WIDS-Verarbeitung:</strong> Position mit höchstem Zollwert</li>
+                    <li><strong>Leere Anmeldearten:</strong> Alle Zeilen (wie andere)</li>
+                </ul>
+                
+                <h4>Tab 2: Import-Einstellungen</h4>
+                <ul>
+                    <li>✅ <strong>EZA-Spalten-Reduzierung</strong> - Automatisch aktiviert</li>
+                    <li>✅ <strong>Zollsatz 0% Ersetzung</strong> - Aktiviert</li>
+                    <li>✅ <strong>BE-Anteil Verarbeitung</strong> - Automatisch</li>
+                </ul>
+                
+                <h4>Tab 3: Automatische Funktionen</h4>
+                <ul>
+                    <li>✅ <strong>Bürgschaftssaldo</strong> - Wird immer berechnet</li>
+                    <li>✅ <strong>NCAR-Enhancement</strong> - Immer aktiviert</li>
+                    <li>✅ <strong>ATB-Filter</strong> - Automatisch</li>
+                </ul>
+                
+                <div class="info-box">
+                    💡 <strong>Hinweis:</strong> Diese Einstellungen sind fest konfiguriert und gewährleisten eine konsistente 
+                    Verarbeitung gemäß den Zollvorschriften. Änderungen sind nur bei den Basis-Einstellungen möglich.
+                </div>
+            </section>
+            
+            <div class="success-box" style="margin-top: 50px;">
+                <strong>© Scills GmbH 2025 - buergcontrolBASE Version 1.0</strong><br>
+                Technische Dokumentation für Entwickler und Administratoren
+            </div>
+        
+<!--
+========= OPTIMIERUNGEN BEGIN =========
+1. Quick Start für Entscheider & Admins
+2. JSON/CSV-Beispiele
+3. ASCII-Matching-Fall
+4. Fehlerregelbaum
+5. Änderungslog
+6. Developer Notes
+-->
+<section id="quickstart">
+  <h2>🚀 Quick Start für Entscheider & Admins</h2>
+  <p>Diese Anwendung verarbeitet zollrelevante Daten im Verwahrungslagerverfahren. Die wichtigsten Schritte:</p>
+  <ol>
+    <li>🔐 Login mit Aktivierungscode</li>
+    <li>📤 Upload der Leitdatei (SumA) + optionale Zusatzdateien</li>
+    <li>🧮 Automatische Verarbeitung & Berechnung der Bürgschaftsauslastung</li>
+    <li>📄 Export als Excel- und Word-Dokument (inkl. Platzhalter-System)</li>
+    <li>🗂️ Mandantenfähig mit Historie und Konfigdateien</li>
+  </ol>
+</section>
+
+<section id="persistenz-beispiel">
+  <h3>📁 Beispiel: settings_demo_kunde.json</h3>
+  <pre>{
+  "von": "01.05.2024",
+  "bis": "30.04.2025",
+  "buergschaft": 5000000,
+  "ersatz_zollsatz": 12.0,
+  "pauschale": 10000,
+  "buergschaft_erhoehung_aktiv": true,
+  "buergschaft_erhoehung_datum": "01.10.2024",
+  "buergschaft_erhoehung_betrag": 1500000
+}</pre>
+</section>
+
+<section id="be-matching-beispiel">
+  <h3>🔎 Beispiel: 3-Kriterien-Matching mit BE-Anteil</h3>
+  <div class="ascii-box">
+Leitdatei:
+  MRN: 24DEIMD12345678901
+  ATB: 24DEATB4567890123
+  Position: 1
+  ↓
+EZA-Datei nach BE-Splitting:
+  MRN: 24DEIMD12345678901
+  ATBnummer: 24DEATB4567890123
+  Position: 1
+  ↓
+MATCH: "präziser Match" (→ Protokoll: "280 präzise")
+  </div>
+</section>
+
+<section id="fehlerbaum">
+  <h3>🧭 Entscheidungslogik bei Fehlern</h3>
+  <div class="ascii-box">
+IF Pflichtspalte fehlt →
+  → Fehlermeldung: "Kritischer Fehler"
+  → Prüfen: Spaltenname, Groß-/Kleinschreibung
+ELSE IF kein Datensatz im Zeitraum →
+  → Hinweis: "Keine Daten im gewählten Zeitraum"
+ELSE IF EZA fehlt bei IMDC →
+  → Fehler: "Fehlende Dateien: Import EZA"
+ELSE → Weiter zur Verarbeitung
+  </div>
+</section>
+
+<section id="changelog">
+  <h2>🕒 Änderungslog</h2>
+  <ul>
+    <li><strong>v1.0</strong> – Initialversion, vollständige technische Struktur</li>
+    <li><strong>v1.1</strong> – Ergänzungen: Quickstart, JSON-Beispiele, BE-Match-Fall, Fehlerbaum, Developer Notes</li>
+  </ul>
+</section>
+
+<section id="developer-notes">
+  <h2>💻 Developer Notes</h2>
+  <ul>
+    <li><strong>Startpunkt:</strong> <code>app.py</code> mit <code>main()</code> in Streamlit</li>
+    <li><strong>Zentrale Funktionen:</strong>
+      <ul>
+        <li><code>process_leitdatei()</code> – Einlesen & Vorverarbeitung</li>
+        <li><code>process_data()</code> – Hauptlogik Matching + Berechnung</li>
+        <li><code>create_bewegungstabelle()</code> – Sheet 2 Export</li>
+        <li><code>calculate_daily_summary()</code> – Sheet 3 Export</li>
+        <li><code>create_personalized_documentation()</code> – Word-Export</li>
+      </ul>
+    </li>
+    <li><strong>Session Keys:</strong> vollständig dokumentiert in Kapitel 1.2</li>
+    <li><strong>Persistenz:</strong> JSON-Dateien pro Mandant, FIFO-Historie</li>
+    <li><strong>Exportformate:</strong> Excel (.xlsx, 3 Sheets), Word (.docx mit Platzhaltern)</li>
+  </ul>
+</section>
+<!--
+========= OPTIMIERUNGEN ENDE =========
+-->
+
+</main>
+        
+        <!-- Back to top button -->
+        <a href="#" class="back-to-top" id="backToTop">↑</a>
+    </div>
+    
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        
+        backToTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Highlight current section in navigation
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-sidebar a[href^="#"]');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.style.backgroundColor = '';
+                link.style.color = '';
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.style.backgroundColor = '#fee2e2';
+                    link.style.color = '#8B1C1C';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
