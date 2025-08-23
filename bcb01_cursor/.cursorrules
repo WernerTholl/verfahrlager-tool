@@ -1,0 +1,15 @@
+# Cursor Rules für bcb01_cursor Projekt
+
+rules:
+  - "Immer Python 3.11 verwenden."
+  - "Die Projekt-Root ist bcb01_cursor."
+  - "Die SPEC.md beschreibt die App-Logik und wird als Referenz genutzt."
+  - "Alle Code-Generierungen oder Änderungen immer an SPEC.md ausrichten."
+  - "Vor Änderungen an Konfigurationsdateien wie config.json oder settings_*.json immer Rücksprache halten."
+  - "Kommentare im Code auf Deutsch, präzise, verständlich."
+  - "Dokumentation soll in Markdown gespeichert werden, wenn nichts anderes gefordert ist."
+ignore:
+  - "__pycache__/"
+  - "zzz_old/"
+  - "*.log"
+  - "*.tmp"
